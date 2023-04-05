@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:aguacapi/colors/colors.dart';
 
 class CrearUsuario extends StatelessWidget {
   CrearUsuario({super.key});
@@ -13,21 +14,20 @@ class CrearUsuario extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              SizedBox(height: 50.0),
               Text(
                 'Nueva cuenta',
                 textAlign: TextAlign.center,
                 style: TextStyle(
-                  fontSize: 24.0,
+                  fontSize: 32.0,
                   fontWeight: FontWeight.bold,
-                  color: Color.fromRGBO(31, 70, 109, 1.0),
+                  color: acBlue,
                 ),
               ),
               SizedBox(height: 32.0),
               TextFormField(
                 decoration: InputDecoration(
                   labelText: 'Email',
-                  labelStyle:
-                      TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
@@ -38,9 +38,7 @@ class CrearUsuario extends StatelessWidget {
               SizedBox(height: 16.0),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Username',
-                  labelStyle:
-                      TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                  labelText: 'Nombre de usuario',
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -50,9 +48,7 @@ class CrearUsuario extends StatelessWidget {
               SizedBox(height: 16.0),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Password',
-                  labelStyle:
-                      TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                  labelText: 'Contraseña',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -63,9 +59,7 @@ class CrearUsuario extends StatelessWidget {
               SizedBox(height: 16.0),
               TextFormField(
                 decoration: InputDecoration(
-                  labelText: 'Confirm Password',
-                  labelStyle:
-                      TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                  labelText: 'Confirmar contraseña',
                   border: OutlineInputBorder(),
                 ),
                 obscureText: true,
@@ -74,10 +68,16 @@ class CrearUsuario extends StatelessWidget {
                 },
               ),
               SizedBox(height: 16.0),
+              Container(
+                child: Divider(
+                  color: acOrange,
+                  thickness: 1,
+                ),
+              ),
+              SizedBox(height: 16.0),
               Text(
-                'Gender:',
-                style: TextStyle(
-                    fontSize: 16.0, color: Color.fromRGBO(243, 163, 110, 1)),
+                'Sexo:',
+                style: TextStyle(fontSize: 20.0, color: acBlue),
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -90,9 +90,10 @@ class CrearUsuario extends StatelessWidget {
                         onChanged: null,
                       ),
                       Text(
-                        'Male',
-                        style:
-                            TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                        'Hombre',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 63, 63, 63),
+                            fontSize: 16.0),
                       ),
                     ],
                   ),
@@ -104,9 +105,10 @@ class CrearUsuario extends StatelessWidget {
                         onChanged: null,
                       ),
                       Text(
-                        'Female',
-                        style:
-                            TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                        'Mujer',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 63, 63, 63),
+                            fontSize: 16.0),
                       ),
                     ],
                   ),
@@ -118,27 +120,70 @@ class CrearUsuario extends StatelessWidget {
                         onChanged: null,
                       ),
                       Text(
-                        'Other',
-                        style:
-                            TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                        'Otro',
+                        style: TextStyle(
+                            color: Color.fromARGB(255, 63, 63, 63),
+                            fontSize: 16.0),
                       ),
                     ],
                   ),
                 ],
               ),
               SizedBox(height: 16.0),
+              Container(
+                child: Divider(
+                  color: acOrange,
+                  thickness: 1,
+                ),
+              ),
+              SizedBox(height: 16.0),
               Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Text(
-                    'Date of Birth:',
-                    style: TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                    'Fecha de nacimiento:',
+                    style: TextStyle(color: acBlue, fontSize: 20.0),
                   ),
                   SizedBox(width: 16.0),
-                  ElevatedButton(
-                    onPressed: null,
-                    child: Text('Select Date'),
+                  // TODO:insertar un wdiget de date picker
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Container(
+                child: Divider(
+                  color: acOrange,
+                  thickness: 1,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Región:',
+                    style: TextStyle(color: acBlue, fontSize: 20.0),
                   ),
+                  SizedBox(width: 16.0),
+                  // TODO: Insertar un dropdown con regiones: fria, templada, calurosa
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Container(
+                child: Divider(
+                  color: acOrange,
+                  thickness: 1,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  Text(
+                    'Actividad física:',
+                    style: TextStyle(color: acBlue, fontSize: 20.0),
+                  ),
+                  SizedBox(width: 16.0),
+                  // TODO: Insertar un dropdown con actividades: alta, media, baja
                 ],
               ),
               SizedBox(height: 16.0),
@@ -146,40 +191,8 @@ class CrearUsuario extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Region:',
-                    style: TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
-                  ),
-                  SizedBox(width: 16.0),
-                  DropdownButton<String>(
-                    value: null,
-                    onChanged: null,
-                    items: null,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Physical Activity:',
-                    style: TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
-                  ),
-                  SizedBox(width: 16.0),
-                  DropdownButton<String>(
-                    value: null,
-                    onChanged: null,
-                    items: null,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16.0),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Allow to use data for ranking:',
-                    style: TextStyle(color: Color.fromRGBO(243, 163, 110, 1)),
+                    'Permitir uso de datos para ranking',
+                    style: TextStyle(color: acOrange50, fontSize: 16.0),
                   ),
                   SizedBox(width: 16.0),
                   Switch(
@@ -191,7 +204,7 @@ class CrearUsuario extends StatelessWidget {
               SizedBox(height: 32.0),
               ElevatedButton(
                 onPressed: () {},
-                child: Text('Register'),
+                child: Text('Registrarse'),
                 style: ElevatedButton.styleFrom(
                   primary: Color.fromARGB(255, 31, 70, 109),
                   onPrimary: Colors.white,
@@ -201,16 +214,18 @@ class CrearUsuario extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
                 child: Text(
-                  'Back',
+                  'Atrás',
                   style: TextStyle(
                     //underline
                     decoration: TextDecoration.underline,
                   ),
                 ),
                 style: TextButton.styleFrom(
-                  primary: Color.fromARGB(243, 163, 110, 1),
+                  primary: acOrange50,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                   ),
