@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:aguacapi/colors/colors.dart';
+import 'package:aguacapi/home_page.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -15,32 +17,40 @@ class LoginPage extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(height: 50.0),
                 Text("Iniciar sesión",
                     textAlign: TextAlign.center,
                     style: TextStyle(
                         fontSize: 32.0,
-                        fontWeight: FontWeight.bold,
-                        color: Color.fromARGB(255, 31, 70, 109))),
+                        fontWeight: FontWeight.w700,
+                        color: acBlue)),
+                SizedBox(height: 32.0),
                 TextField(
                   decoration: InputDecoration(
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 32.0),
                 TextField(
                   obscureText: true,
                   decoration: InputDecoration(
-                    labelText: 'Password',
+                    labelText: 'Contraseña',
                     border: OutlineInputBorder(),
                   ),
                 ),
-                SizedBox(height: 16.0),
+                SizedBox(height: 32.0),
                 ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Enter'),
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                  child: Text('Entrar'),
                   style: ElevatedButton.styleFrom(
-                    primary: Color.fromARGB(255, 31, 70, 109),
+                    primary: acBlue,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
@@ -49,16 +59,18 @@ class LoginPage extends StatelessWidget {
                 ),
                 //back underlined button
                 TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Text(
-                    'Back',
+                    'Atrás',
                     style: TextStyle(
                       //underline
                       decoration: TextDecoration.underline,
                     ),
                   ),
                   style: TextButton.styleFrom(
-                    primary: Color.fromARGB(243, 163, 110, 1),
+                    primary: acOrange50,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),
