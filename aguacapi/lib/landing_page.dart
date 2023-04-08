@@ -26,6 +26,7 @@ class LandingPage extends StatelessWidget {
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: acBlue50,
+                    fixedSize: const Size(200, 50),
                   ),
                   // insertar botón de iniciar sesión con texto e icono
                   onPressed: () {
@@ -40,17 +41,37 @@ class LandingPage extends StatelessWidget {
                 ),
                 SizedBox(height: 16.0),
                 // insertar linea divisora
-                Container(
-                  width: 200,
-                  child: Divider(
-                    color: acBlue50,
-                    thickness: 1,
-                  ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 90,
+                      child: Divider(
+                        color: acBlue50,
+                        thickness: 1,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 8.0, left: 8.0),
+                      child: Text(
+                        'o',
+                        style: TextStyle(fontSize: 18.0),
+                      ),
+                    ),
+                    Container(
+                      width: 90,
+                      child: Divider(
+                        color: acBlue50,
+                        thickness: 1,
+                      ),
+                    ),
+                  ],
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   style: ElevatedButton.styleFrom(
                     primary: acBlue50,
+                    fixedSize: const Size(200, 50),
                   ),
                   onPressed: () {
                     Navigator.push(
