@@ -2,6 +2,9 @@ import 'package:aguacapi/perfil.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/configuracion.dart';
 import 'package:aguacapi/ranking.dart';
+import 'package:aguacapi/estadisticas.dart';
+import 'package:aguacapi/nuevo_consumo.dart';
+import 'package:aguacapi/colors/colors.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -13,20 +16,31 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int currentIndex = 0;
 //TODO: Tienen que ir en orden, revisar eso despues
-  final _pagesName = ["Ranking", "Perfil", "Configuracion"];
-  final _pagelist = [Ranking(), Perfil(), Configuracion()];
+  final _pagesName = [
+    "Ranking",
+    "Estadisticas",
+    "Perfil",
+    "NuevoConsumo",
+    "Configuracion"
+  ];
+  final _pagelist = [
+    Ranking(),
+    Estadisticas(),
+    Perfil(),
+    NuevoConsumo(),
+    Configuracion()
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(_pagesName[currentIndex]),
-      ),
+      appBar: AppBar(),
       body: IndexedStack(
         index: currentIndex,
         children: _pagelist,
       ),
       bottomNavigationBar: NavigationBar(
+        backgroundColor: acBlue,
         selectedIndex: currentIndex,
         onDestinationSelected: (value) {
           setState(() {
@@ -35,16 +49,39 @@ class _HomePageState extends State<HomePage> {
         },
         destinations: [
           NavigationDestination(
-            icon: Icon(Icons.star_half_sharp),
-            label: '${_pagesName[0]}',
+            icon: Icon(
+              Icons.star_half_sharp,
+              color: Colors.white,
+            ),
+            label: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.person),
-            label: '${_pagesName[1]}',
+            icon: Icon(
+              Icons.analytics_rounded,
+              color: Colors.white,
+            ),
+            label: '',
           ),
           NavigationDestination(
-            icon: Icon(Icons.settings),
-            label: '${_pagesName[2]}',
+            icon: Icon(
+              Icons.person,
+              color: Colors.white,
+            ),
+            label: '',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.add_box_rounded,
+              color: Colors.white,
+            ),
+            label: '',
+          ),
+          NavigationDestination(
+            icon: Icon(
+              Icons.settings,
+              color: Colors.white,
+            ),
+            label: '',
           ),
         ],
       ),

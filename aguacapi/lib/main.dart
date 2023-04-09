@@ -3,8 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:aguacapi/home_page.dart';
 import 'package:aguacapi/landing_page.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:aguacapi/providers/crear_usuario_provider.dart';
+import 'package:provider/provider.dart';
 
-void main() => runApp(const MyApp());
+void main() {
+  runApp(
+    // Agregar un MultiProvider
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => CrearUsuarioProvider(),
+        ),
+      ],
+      child: MyApp(),
+    ),
+  );
+}
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});

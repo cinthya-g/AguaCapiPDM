@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:aguacapi/configuracion.dart';
 import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/colors/colors.dart';
 
 class Ranking extends StatelessWidget {
   Ranking({super.key});
@@ -11,26 +12,29 @@ class Ranking extends StatelessWidget {
       children: [
         Container(
           alignment: Alignment.centerLeft,
-          color: Color.fromARGB(255, 31, 70, 109),
+          color: acBlue,
           margin: EdgeInsets.only(bottom: 5),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Ranking de usuarios",
-                style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              ),
-              Text(
-                "Top hidratacion",
-                style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white),
-              )
-            ],
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Ranking de usuarios",
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                ),
+                Text(
+                  "Top hidratación",
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
+                )
+              ],
+            ),
           ),
         ),
         Padding(
