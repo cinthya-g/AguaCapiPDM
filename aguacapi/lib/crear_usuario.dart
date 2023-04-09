@@ -144,7 +144,6 @@ class CrearUsuario extends StatelessWidget {
                       }
                     }),
                 SizedBox(width: 16.0),
-                SizedBox(height: 16.0),
                 Container(
                   child: Divider(
                     color: acOrange,
