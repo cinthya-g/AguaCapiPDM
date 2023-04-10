@@ -5,6 +5,7 @@ import 'package:aguacapi/ranking.dart';
 import 'package:aguacapi/estadisticas.dart';
 import 'package:aguacapi/nuevo_consumo.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:intl/number_symbols_data.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});
@@ -14,8 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  int currentIndex = 0;
-//TODO: Tienen que ir en orden, revisar eso despues
+  int currentIndex = 2;
+
   final _pagesName = [
     "Ranking",
     "Estadisticas",
@@ -53,12 +54,22 @@ class _HomePageState extends State<HomePage> {
               Icons.star_half_sharp,
               color: Colors.white,
             ),
+            selectedIcon: Icon(
+              Icons.star_half_sharp,
+              color: acBlue100,
+              size: 32,
+            ),
             label: '',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.analytics_rounded,
               color: Colors.white,
+            ),
+            selectedIcon: Icon(
+              Icons.analytics_rounded,
+              color: acBlue100,
+              size: 32,
             ),
             label: '',
           ),
@@ -67,6 +78,11 @@ class _HomePageState extends State<HomePage> {
               Icons.person,
               color: Colors.white,
             ),
+            selectedIcon: Icon(
+              Icons.person,
+              color: acBlue100,
+              size: 32,
+            ),
             label: '',
           ),
           NavigationDestination(
@@ -74,12 +90,22 @@ class _HomePageState extends State<HomePage> {
               Icons.add_box_rounded,
               color: Colors.white,
             ),
+            selectedIcon: Icon(
+              Icons.add_box_rounded,
+              color: acBlue100,
+              size: 32,
+            ),
             label: '',
           ),
           NavigationDestination(
             icon: Icon(
               Icons.settings,
               color: Colors.white,
+            ),
+            selectedIcon: Icon(
+              Icons.settings,
+              color: acBlue100,
+              size: 32,
             ),
             label: '',
           ),

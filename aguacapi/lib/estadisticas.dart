@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
-import 'package:flutter_charts/flutter_charts.dart';
+import 'package:intl/intl.dart';
+
+import 'package:aguacapi/mybarchart.dart';
 
 class Estadisticas extends StatelessWidget {
   const Estadisticas({super.key});
@@ -38,6 +40,34 @@ class Estadisticas extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Padding(
+          padding: const EdgeInsets.only(right: 13.0, left: 13.0),
+          child: TextField(
+              controller: null,
+              decoration: InputDecoration(
+                  border: OutlineInputBorder(),
+                  hintText: 'Selecciona una fecha',
+                  suffixIcon: Icon(Icons.calendar_today)),
+              onTap: () async {
+                DateTime? pickedDate = await showDatePicker(
+                    context: context,
+                    initialDate: DateTime.now(),
+                    firstDate: DateTime(1900),
+                    lastDate: DateTime(2100));
+                if (pickedDate != null) {
+                  print(pickedDate);
+                  String formattedDate =
+                      DateFormat('yyyy-MM-dd').format(pickedDate);
+                  var formattedDateProvider = formattedDate;
+                  print(formattedDate);
+                  initialDate:
+                  formattedDate;
+                } else {
+                  print('Date is not selected');
+                }
+              }),
+        ),
+        SizedBox(height: 10),
+        Padding(
           padding: const EdgeInsets.only(left: 8.0),
           child: Row(
             children: [
@@ -52,9 +82,21 @@ class Estadisticas extends StatelessWidget {
           ),
         ),
         SizedBox(height: 10),
-        //TODO: Gráfica de barras ?
-        Container(),
-
+        Padding(
+          padding: const EdgeInsets.only(left: 13.0, right: 13.0),
+          child: Container(
+            margin: EdgeInsets.all(2),
+            width: double.infinity,
+            height: 170,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10), color: acBlue100),
+            // Gráfica de barras
+            child: Padding(
+              padding: const EdgeInsets.only(top: 25.0),
+              child: MyBarChart(),
+            ),
+          ),
+        ),
         SizedBox(height: 20),
         Padding(
           padding: const EdgeInsets.only(left: 8.0),
@@ -80,7 +122,7 @@ class Estadisticas extends StatelessWidget {
             child: Column(
               children: [
                 Image.asset('assets/images/default.png',
-                    height: 250, width: 250, fit: BoxFit.fitHeight),
+                    height: 220, width: 220, fit: BoxFit.fitHeight),
                 Text("Agua embotellada",
                     style: TextStyle(
                         fontSize: 36,
@@ -96,6 +138,7 @@ class Estadisticas extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 20),
       ],
     );
   }

@@ -42,8 +42,8 @@ class Ranking extends StatelessWidget {
           child: TextField(
             onChanged: (value) {},
             decoration: InputDecoration(
-                labelText: "Search",
-                hintText: "Search",
+                labelText: "Buscar usuario...",
+                hintText: "Poncho Carpincho",
                 prefixIcon: Icon(Icons.search),
                 border: OutlineInputBorder(
                     borderRadius: BorderRadius.all(Radius.circular(15.0)))),
@@ -54,7 +54,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.green),
+              color: acGreen),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -73,7 +73,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Color.fromARGB(255, 97, 224, 34)),
+              color: acGreen50),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -92,7 +92,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Color.fromARGB(255, 158, 225, 35)),
+              color: acGreen100),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -111,7 +111,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey),
+              color: acGrey),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -130,7 +130,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey),
+              color: acGrey),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -149,7 +149,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey),
+              color: acGrey),
           child: ListTile(
             leading: Icon(
               Icons.person,
@@ -168,7 +168,7 @@ class Ranking extends StatelessWidget {
           decoration: BoxDecoration(
               border: Border.all(color: Colors.black),
               borderRadius: BorderRadius.circular(10),
-              color: Colors.grey),
+              color: acGrey),
           child: ListTile(
             leading: Icon(
               Icons.person,
