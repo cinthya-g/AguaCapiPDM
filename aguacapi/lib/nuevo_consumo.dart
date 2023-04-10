@@ -145,20 +145,62 @@ class NuevoConsumo extends StatelessWidget {
                   onTap: () async {}),
               SizedBox(height: 20),
               ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Guardar"),
-                  style: ElevatedButton.styleFrom(primary: acBlue100)),
+                  onPressed: () {
+                    // TODO: Guardar el consumo
+                  },
+                  child: Text("Guardar bebida"),
+                  style: ElevatedButton.styleFrom(
+                    primary: acBlue50,
+                    onPrimary: acBackgroundWhite,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(32),
+                    ),
+                  )),
               SizedBox(height: 20),
               Text(
-                "o en su lugar, elimina un consumo anterior",
+                "o en su lugar, elimina un consumo anterior:",
                 style: TextStyle(
                     color: acBrown, fontSize: 18, fontWeight: FontWeight.w400),
               ),
               SizedBox(height: 20),
-              ElevatedButton(
-                  onPressed: () {},
-                  child: Text("Eliminar"),
-                  style: ElevatedButton.styleFrom(primary: acOrange50)),
+              Padding(
+                padding: const EdgeInsets.only(left: 8.0),
+                child: Row(
+                  children: [
+                    Icon(Icons.delete, size: 35, color: acOrange50),
+                    SizedBox(width: 10),
+                    Text("¿Cuál quitamos?",
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w400,
+                            color: acBrown)),
+                  ],
+                ),
+              ),
+              SizedBox(height: 20),
+              Container(
+                height: 200,
+                width: double.infinity,
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: 4,
+                  itemBuilder: (context, index) {
+                    return Container(
+                      margin: EdgeInsets.only(right: 10),
+                      child: TextButton(
+                        onPressed: () {},
+                        child: Text("Bebida existente"),
+                        style: TextButton.styleFrom(
+                          primary: acBrown,
+                          backgroundColor: acOrange100,
+                          onSurface: Colors.grey,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
+              SizedBox(height: 20),
             ],
           ),
         ),

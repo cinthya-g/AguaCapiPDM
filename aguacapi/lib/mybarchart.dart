@@ -15,7 +15,7 @@ class MyBarChart extends StatelessWidget {
         barGroups: barGroups,
         gridData: FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 3600,
+        maxY: 4500,
         // AQUÍ SE MODIFICA EL MÁXIMO DE MILILITROS
         // SE PUEDE OBTENER CON UN CÁLCULO DEPENDIENDO DEL CONSUMO MÁXIMO DE CADA USUARIO
       ),
@@ -154,7 +154,7 @@ class MyBarChart extends StatelessWidget {
           x: 3,
           barRods: [
             BarChartRodData(
-              toY: 1500,
+              toY: 4200,
               gradient: _barsGradient,
             )
           ],
@@ -164,7 +164,7 @@ class MyBarChart extends StatelessWidget {
           x: 4,
           barRods: [
             BarChartRodData(
-              toY: 1800,
+              toY: 4500,
               gradient: _barsGradient,
             )
           ],

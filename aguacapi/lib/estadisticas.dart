@@ -138,6 +138,7 @@ class Estadisticas extends StatelessWidget {
             ),
           ),
         ),
+        SizedBox(height: 20),
       ],
     );
   }

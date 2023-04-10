@@ -19,7 +19,7 @@ class Configuracion extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Configuracion",
+                  "Configuración",
                   style: TextStyle(
                       fontSize: 32,
                       fontWeight: FontWeight.bold,

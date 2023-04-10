@@ -5,6 +5,7 @@ import 'package:aguacapi/ranking.dart';
 import 'package:aguacapi/estadisticas.dart';
 import 'package:aguacapi/nuevo_consumo.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:intl/number_symbols_data.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({super.key});

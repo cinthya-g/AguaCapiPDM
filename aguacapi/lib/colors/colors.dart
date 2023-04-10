@@ -13,6 +13,7 @@ const acGreen50 = Color.fromARGB(255, 188, 253, 191);
 const acGreen100 = Color.fromARGB(255, 220, 255, 221);
 
 const acGrey = Color.fromARGB(255, 228, 228, 228);
+const acGrey50 = Color.fromARGB(255, 49, 49, 49);
 
 const acBrown = Color.fromARGB(255, 41, 31, 31);
 
