@@ -15,13 +15,15 @@ class AuthSuccessState extends AuthState {
 
 class SignOutSuccessState extends AuthState {
   // cerrar sesion
+  final String sMsg;
+  SignOutSuccessState({this.sMsg = "Sesión cerrada exitosamente"});
 }
 
 class AuthErrorState extends AuthState {
   // mosterar un error
   final String eMsg;
 
-  AuthErrorState({this.eMsg = ""});
+  AuthErrorState({this.eMsg = "Error al autenticar"});
   @override
   List<Object> get props => [eMsg];
 }

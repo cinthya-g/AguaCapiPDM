@@ -11,6 +11,8 @@ class VerifyAuthEvent extends AuthEvent {}
 
 class GoogleAuthEvent extends AuthEvent {}
 
+class LoginAuthEvent extends AuthEvent {}
+
 class EmailAuthEvent extends AuthEvent {}
 
 class SignOutEvent extends AuthEvent {}

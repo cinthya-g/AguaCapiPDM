@@ -17,6 +17,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyAuthEvent>(_authVerification);
     on<GoogleAuthEvent>(_authGoogle);
     on<EmailAuthEvent>(_authEmail);
+    on<LoginAuthEvent>(_loginAuthEmail);
     on<SignOutEvent>(_signOut);
   }
 
@@ -48,12 +49,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  FutureOr<void> _loginAuthEmail(event, emit) async {
+    emit(AuthLoadingState());
+    try {
+      await _authRepo.createAccount();
+      emit(AuthSuccessState());
+    } catch (e) {
+      emit(AuthErrorState(eMsg: "Error al crear cuenta de Firebase"));
+    }
+  }
+
   FutureOr<void> _signOut(event, emit) async {
     emit(AuthLoadingState());
     try {
       await _authRepo.signOutGoogleUser();
       await _authRepo.signOutFirebaseUser();
       emit(SignOutSuccessState());
+      print("SESIÓN CERRADA!");
     } catch (e) {
       emit(AuthErrorState(eMsg: "Error al cerrar sesión"));
     }

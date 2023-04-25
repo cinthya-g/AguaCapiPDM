@@ -1,9 +1,16 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CrearUsuarioProvider with ChangeNotifier {
+  static final CrearUsuarioProvider _crearUsuarioProvider =
+      CrearUsuarioProvider._internal();
+  factory CrearUsuarioProvider() {
+    return _crearUsuarioProvider;
+  }
+
+  CrearUsuarioProvider._internal();
+
   var emailController = TextEditingController();
   var usernameController = TextEditingController();
   var passwordController = TextEditingController();
