@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:intl/intl.dart';
 
-import 'package:aguacapi/mybarchart.dart';
+import 'package:aguacapi/content/mybarchart.dart';
 
 class Estadisticas extends StatelessWidget {
   const Estadisticas({super.key});

@@ -1,7 +1,7 @@
-import 'package:aguacapi/crear_usuario.dart';
+import 'package:aguacapi/content/crear_usuario.dart';
 import 'package:flutter/material.dart';
-import 'package:aguacapi/login.dart';
-import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/content/login.dart';
+import 'package:aguacapi/content/home_page.dart';
 import 'package:aguacapi/colors/colors.dart';
 
 class LandingPage extends StatelessWidget {

@@ -1,9 +1,9 @@
-import 'package:aguacapi/perfil.dart';
+import 'package:aguacapi/content/perfil.dart';
 import 'package:flutter/material.dart';
-import 'package:aguacapi/configuracion.dart';
-import 'package:aguacapi/ranking.dart';
-import 'package:aguacapi/estadisticas.dart';
-import 'package:aguacapi/nuevo_consumo.dart';
+import 'package:aguacapi/content/configuracion.dart';
+import 'package:aguacapi/content/ranking.dart';
+import 'package:aguacapi/content/estadisticas.dart';
+import 'package:aguacapi/content/nuevo_consumo.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:intl/number_symbols_data.dart';
 

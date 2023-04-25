@@ -1,7 +1,7 @@
-import 'package:aguacapi/landing_page.dart';
+import 'package:aguacapi/content/landing_page.dart';
 import 'package:flutter/material.dart';
-import 'package:aguacapi/home_page.dart';
-import 'package:aguacapi/landing_page.dart';
+import 'package:aguacapi/content/home_page.dart';
+import 'package:aguacapi/content/landing_page.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:aguacapi/providers/crear_usuario_provider.dart';
 import 'package:provider/provider.dart';

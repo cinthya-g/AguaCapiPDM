@@ -1,12 +1,20 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class CrearUsuarioProvider with ChangeNotifier {
   var emailController = TextEditingController();
   var usernameController = TextEditingController();
   var passwordController = TextEditingController();
+  bool passwordVisible = true;
   var selectedDate = TextEditingController();
+
+// Cambiar visibilidad de contraseña
+  void togglePasswordVisibility() {
+    passwordVisible = !passwordVisible;
+    notifyListeners();
+  }
 
 // RadioButtons de sexo
   var firstRadioGroupValues = {
@@ -32,7 +40,7 @@ class CrearUsuarioProvider with ChangeNotifier {
   };
   int actividadFisica = 0;
 
-  // Controllers
+  // GET de controllers
   String get getEmail => emailController.text;
   String get getUsername => usernameController.text;
   String get getPassword => passwordController.text;
