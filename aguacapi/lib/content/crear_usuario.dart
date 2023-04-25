@@ -1,10 +1,11 @@
-import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/content/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:aguacapi/providers/crear_usuario_provider.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
-import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:aguacapi/auth/bloc/auth_bloc.dart';
 
 class CrearUsuario extends StatelessWidget {
   CrearUsuario({super.key});
@@ -55,22 +56,21 @@ class CrearUsuario extends StatelessWidget {
                 TextFormField(
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
+                    suffixIcon: IconButton(
+                        icon: context
+                                .watch<CrearUsuarioProvider>()
+                                .passwordVisible
+                            ? Icon(Icons.visibility)
+                            : Icon(Icons.visibility_off),
+                        onPressed: () => context
+                            .read<CrearUsuarioProvider>()
+                            .togglePasswordVisibility()),
                     border: OutlineInputBorder(),
                   ),
-                  obscureText: true,
+                  obscureText:
+                      context.watch<CrearUsuarioProvider>().passwordVisible,
                   validator: (value) {
                     // Password validation logic here
-                  },
-                ),
-                SizedBox(height: 16.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Confirmar contraseña',
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: true,
-                  validator: (value) {
-                    // Password confirmation validation logic here
                   },
                 ),
                 SizedBox(height: 16.0),
@@ -248,6 +248,7 @@ class CrearUsuario extends StatelessWidget {
                       context,
                       MaterialPageRoute(builder: (context) => HomePage()),
                     );
+                    BlocProvider.of<AuthBloc>(context).add(EmailAuthEvent());
                   },
                   child: Text('Registrarse'),
                   style: ElevatedButton.styleFrom(

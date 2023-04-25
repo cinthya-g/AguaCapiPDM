@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
-import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/content/home_page.dart';
 import 'package:flutter/services.dart';
 
 class Perfil extends StatelessWidget {
@@ -89,7 +89,7 @@ class Perfil extends StatelessWidget {
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(32),
                                   ),
-                                  fixedSize: const Size(160, 18),
+                                  fixedSize: const Size(160, 20),
                                 ),
                                 onPressed: () {
                                   showDialog(
@@ -184,7 +184,7 @@ class Perfil extends StatelessWidget {
                                     Icon(Icons.edit),
                                     SizedBox(width: 5.0),
                                     Text('Cambiar meta',
-                                        style: TextStyle(fontSize: 18))
+                                        style: TextStyle(fontSize: 16))
                                   ],
                                 ))
                           ],
@@ -370,7 +370,7 @@ class Perfil extends StatelessWidget {
                       ],
                     )),
               ),
-            )
+            ),
           ],
         )
       ],

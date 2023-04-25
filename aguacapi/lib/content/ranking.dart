@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aguacapi/configuracion.dart';
-import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/content/configuracion.dart';
+import 'package:aguacapi/content/home_page.dart';
 import 'package:aguacapi/colors/colors.dart';
 
 class Ranking extends StatelessWidget {

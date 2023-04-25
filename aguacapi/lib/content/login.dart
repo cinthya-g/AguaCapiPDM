@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
-import 'package:aguacapi/home_page.dart';
+import 'package:aguacapi/content/home_page.dart';
+import 'package:aguacapi/auth/bloc/auth_bloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginPage extends StatelessWidget {
   LoginPage({super.key});
@@ -57,6 +59,25 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                 ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => HomePage()),
+                    );
+                  },
+                  child: Text('Entrar con Google'),
+                  style: ElevatedButton.styleFrom(
+                    primary: acBlue,
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
                 //back underlined button
                 TextButton(
                   onPressed: () {

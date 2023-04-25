@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:aguacapi/home_page.dart';
-import 'package:aguacapi/ranking.dart';
+import 'package:aguacapi/content/home_page.dart';
+import 'package:aguacapi/content/ranking.dart';
 
 class Configuracion extends StatelessWidget {
   Configuracion({super.key});
