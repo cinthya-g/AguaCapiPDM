@@ -92,4 +92,16 @@ class CrearUsuarioProvider with ChangeNotifier {
     selectedDate = selectedDate;
     notifyListeners();
   }
+
+  void borrarFormularioCrear() {
+    emailController.clear();
+    usernameController.clear();
+    passwordController.clear();
+    selectedDate.clear();
+    sexo = 0;
+    region = 0;
+    actividadFisica = 0;
+    permisoRanking = true;
+    notifyListeners();
+  }
 }

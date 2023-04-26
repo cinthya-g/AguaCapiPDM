@@ -238,12 +238,8 @@ class CrearUsuario extends StatelessWidget {
                 SizedBox(height: 32.0),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
                     BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent());
+                    BlocProvider.of<AuthBloc>(context).add(VerifyAuthEvent());
                   },
                   child: Text('Registrarse'),
                   style: ElevatedButton.styleFrom(

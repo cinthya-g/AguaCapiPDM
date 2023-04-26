@@ -35,43 +35,24 @@ class UserAuthRepository {
 
   Future<void> createAccount() async {
     print("Entró a crear cuenta");
-    try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        // llamar singleton de CrearUsuarioProvider
-        email: CrearUsuarioProvider().getEmail,
-        password: CrearUsuarioProvider().getPassword,
-      );
-      print(">> USUARIO CREADO: ${credential.user!.email}!!");
-    } on FirebaseAuthException catch (e) {
-      print("No se creó nada, error");
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print("ERROR: ${e}");
-    }
+    final credential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // llamar singleton de CrearUsuarioProvider
+      email: CrearUsuarioProvider().getEmail,
+      password: CrearUsuarioProvider().getPassword,
+    );
+    print(">> USUARIO CREADO: ${credential.user!.email}!!");
   }
 
   Future<void> signInWithFirebase() async {
     // Iniciar sesión con correo y contraseña
     print("Entró a login");
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        // Llamar singleton de LoginProvider
-        email: LoginProvider().getEmail,
-        password: LoginProvider().getPassword,
-      );
-      print(">> USUARIO LOGUEADO: ${credential.user!.email}!!");
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // Llamar singleton de LoginProvider
+      email: LoginProvider().getEmail,
+      password: LoginProvider().getPassword,
+    );
+    print(">> USUARIO LOGUEADO: ${credential.user!.email}!!");
   }
 
   Future<void> signOutFirebaseUser() async {

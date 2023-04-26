@@ -26,4 +26,11 @@ class LoginProvider with ChangeNotifier {
   // GET de controllers
   String get getEmail => emailController.text;
   String get getPassword => passwordController.text;
+
+  // Borrar formulario login
+  void borrarFormularioLogin() {
+    emailController.clear();
+    passwordController.clear();
+    notifyListeners();
+  }
 }
