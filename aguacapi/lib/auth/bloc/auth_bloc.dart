@@ -17,14 +17,17 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<VerifyAuthEvent>(_authVerification);
     on<GoogleAuthEvent>(_authGoogle);
     on<EmailAuthEvent>(_authEmail);
+    on<LoginAuthEvent>(_createAuthEmail);
     on<SignOutEvent>(_signOut);
   }
 
   FutureOr<void> _authVerification(event, emit) {
     if (_authRepo.isAlreadyAuthenticated()) {
       emit(AuthSuccessState());
+      print("STATE: AuthSuccessState");
     } else {
       emit(UnAuthState());
+      print("STATE: UnAuthState");
     }
   }
 
@@ -43,8 +46,24 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     try {
       await _authRepo.signInWithFirebase();
       emit(AuthSuccessState());
+      print("STATE: AuthSuccessState");
     } catch (e) {
       emit(AuthErrorState(eMsg: "Error con login de Firebase"));
+      print("STATE: AuthErrorState");
+    }
+  }
+
+  FutureOr<void> _createAuthEmail(event, emit) async {
+    emit(AuthLoadingState());
+    try {
+      await _authRepo.createAccount();
+      // determinar si cayó en try o catch
+
+      emit(AuthSuccessState());
+      print("STATE: AuthSuccessState");
+    } catch (e) {
+      emit(AuthErrorState(eMsg: "Error al crear cuenta de Firebase"));
+      print("STATE: AuthErrorState");
     }
   }
 
@@ -54,8 +73,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await _authRepo.signOutGoogleUser();
       await _authRepo.signOutFirebaseUser();
       emit(SignOutSuccessState());
+      print("STATE: SignOutSuccessState - SESIÓN CERRADA!");
     } catch (e) {
       emit(AuthErrorState(eMsg: "Error al cerrar sesión"));
+      print("STATE: AuthErrorState al cerrar sesion");
     }
   }
 }

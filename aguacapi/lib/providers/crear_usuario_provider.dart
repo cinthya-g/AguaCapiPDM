@@ -1,9 +1,16 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
 class CrearUsuarioProvider with ChangeNotifier {
+  static final CrearUsuarioProvider _crearUsuarioProvider =
+      CrearUsuarioProvider._internal();
+  factory CrearUsuarioProvider() {
+    return _crearUsuarioProvider;
+  }
+
+  CrearUsuarioProvider._internal();
+
   var emailController = TextEditingController();
   var usernameController = TextEditingController();
   var passwordController = TextEditingController();
@@ -83,6 +90,18 @@ class CrearUsuarioProvider with ChangeNotifier {
     passwordController.text = password;
     print('Password: ${passwordController.text}');
     selectedDate = selectedDate;
+    notifyListeners();
+  }
+
+  void borrarFormularioCrear() {
+    emailController.clear();
+    usernameController.clear();
+    passwordController.clear();
+    selectedDate.clear();
+    sexo = 0;
+    region = 0;
+    actividadFisica = 0;
+    permisoRanking = true;
     notifyListeners();
   }
 }

@@ -37,6 +37,7 @@ class CrearUsuario extends StatelessWidget {
                     labelText: 'Email',
                     border: OutlineInputBorder(),
                   ),
+                  controller: provider.emailController,
                   keyboardType: TextInputType.emailAddress,
                   validator: (value) {
                     // Email validation logic here
@@ -48,27 +49,24 @@ class CrearUsuario extends StatelessWidget {
                     labelText: 'Nombre de usuario',
                     border: OutlineInputBorder(),
                   ),
+                  controller: provider.usernameController,
                   validator: (value) {
                     // Username validation logic here
                   },
                 ),
                 SizedBox(height: 16.0),
                 TextFormField(
+                  controller: provider.passwordController,
                   decoration: InputDecoration(
                     labelText: 'Contraseña',
                     suffixIcon: IconButton(
-                        icon: context
-                                .watch<CrearUsuarioProvider>()
-                                .passwordVisible
+                        icon: provider.passwordVisible
                             ? Icon(Icons.visibility)
                             : Icon(Icons.visibility_off),
-                        onPressed: () => context
-                            .read<CrearUsuarioProvider>()
-                            .togglePasswordVisibility()),
+                        onPressed: () => provider.togglePasswordVisibility()),
                     border: OutlineInputBorder(),
                   ),
-                  obscureText:
-                      context.watch<CrearUsuarioProvider>().passwordVisible,
+                  obscureText: provider.passwordVisible,
                   validator: (value) {
                     // Password validation logic here
                   },
@@ -87,10 +85,7 @@ class CrearUsuario extends StatelessWidget {
                 ),
                 Column(
                   // generar 3 radio buttons
-                  children: context
-                      .read<CrearUsuarioProvider>()
-                      .firstRadioGroupValues
-                      .entries
+                  children: provider.firstRadioGroupValues.entries
                       .map(
                         (entry) => RadioListTile(
                           title: Text(entry.value),
@@ -243,35 +238,13 @@ class CrearUsuario extends StatelessWidget {
                 SizedBox(height: 32.0),
                 ElevatedButton(
                   onPressed: () {
-                    Navigator.pop(context);
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => HomePage()),
-                    );
-                    BlocProvider.of<AuthBloc>(context).add(EmailAuthEvent());
+                    BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent());
+                    BlocProvider.of<AuthBloc>(context).add(VerifyAuthEvent());
                   },
                   child: Text('Registrarse'),
                   style: ElevatedButton.styleFrom(
                     primary: Color.fromARGB(255, 31, 70, 109),
                     onPrimary: Colors.white,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'Atrás',
-                    style: TextStyle(
-                      //underline
-                      decoration: TextDecoration.underline,
-                    ),
-                  ),
-                  style: TextButton.styleFrom(
-                    primary: acOrange50,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
                     ),

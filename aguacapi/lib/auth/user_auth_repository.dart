@@ -1,5 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:aguacapi/providers/crear_usuario_provider.dart';
+import 'package:aguacapi/providers/login_provider.dart';
 
 class UserAuthRepository {
   // Crear instancias de FirebaseAuth y GoogleSignIn
@@ -32,37 +34,25 @@ class UserAuthRepository {
   }
 
   Future<void> createAccount() async {
-    try {
-      final credential =
-          await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: "dato del provider",
-        password: "provider",
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
+    print("Entró a crear cuenta");
+    final credential =
+        await FirebaseAuth.instance.createUserWithEmailAndPassword(
+      // llamar singleton de CrearUsuarioProvider
+      email: CrearUsuarioProvider().getEmail,
+      password: CrearUsuarioProvider().getPassword,
+    );
+    print(">> USUARIO CREADO: ${credential.user!.email}!!");
   }
 
   Future<void> signInWithFirebase() async {
     // Iniciar sesión con correo y contraseña
-    try {
-      final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: "provider",
-        password: "provider",
-      );
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'user-not-found') {
-        print('No user found for that email.');
-      } else if (e.code == 'wrong-password') {
-        print('Wrong password provided for that user.');
-      }
-    }
+    print("Entró a login");
+    final credential = await FirebaseAuth.instance.signInWithEmailAndPassword(
+      // Llamar singleton de LoginProvider
+      email: LoginProvider().getEmail,
+      password: LoginProvider().getPassword,
+    );
+    print(">> USUARIO LOGUEADO: ${credential.user!.email}!!");
   }
 
   Future<void> signOutFirebaseUser() async {

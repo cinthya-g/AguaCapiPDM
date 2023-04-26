@@ -1,19 +1,31 @@
-import 'package:aguacapi/content/landing_page.dart';
 import 'package:flutter/material.dart';
+// Page
+import 'package:aguacapi/content/landing_page.dart';
 import 'package:aguacapi/content/home_page.dart';
 import 'package:aguacapi/content/landing_page.dart';
 import 'package:aguacapi/colors/colors.dart';
-import 'package:aguacapi/providers/crear_usuario_provider.dart';
+// Bloc
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:aguacapi/auth/bloc/auth_bloc.dart';
+// Firebase
+import 'package:firebase_core/firebase_core.dart';
+// Provider
 import 'package:provider/provider.dart';
+import 'package:aguacapi/providers/crear_usuario_provider.dart';
+import 'package:aguacapi/providers/login_provider.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(
     // Agregar un MultiProvider
-    MultiProvider(
+    MultiBlocProvider(
       providers: [
+        BlocProvider(create: (context) => AuthBloc()..add(VerifyAuthEvent())),
         ChangeNotifierProvider(
           create: (context) => CrearUsuarioProvider(),
         ),
+        ChangeNotifierProvider(create: (context) => LoginProvider()),
       ],
       child: MyApp(),
     ),
@@ -26,7 +38,30 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'AguaCapi App', theme: _acTheme, home: LandingPage());
+        title: 'AguaCapi App',
+        theme: _acTheme,
+        home: BlocConsumer<AuthBloc, AuthState>(
+          listener: (context, state) {
+            if (state is AuthErrorState) {
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.eMsg),
+                backgroundColor: acError,
+              ));
+            }
+          },
+          builder: (context, state) {
+            if (state is AuthSuccessState) {
+              return HomePage();
+            } else if (state is AuthErrorState ||
+                state is UnAuthState ||
+                state is SignOutSuccessState) {
+              return LandingPage();
+            }
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        ));
   }
 }
 
