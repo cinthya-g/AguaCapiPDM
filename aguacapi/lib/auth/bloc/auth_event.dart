@@ -16,3 +16,9 @@ class LoginAuthEvent extends AuthEvent {}
 class EmailAuthEvent extends AuthEvent {}
 
 class SignOutEvent extends AuthEvent {}
+
+class SelectLoginEvent extends AuthEvent {}
+
+class SelectRegisterEvent extends AuthEvent {}
+
+class BackToHomeEvent extends AuthEvent {}

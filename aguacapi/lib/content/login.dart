@@ -56,7 +56,6 @@ class LoginPage extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       BlocProvider.of<AuthBloc>(context).add(EmailAuthEvent());
-                      BlocProvider.of<AuthBloc>(context).add(VerifyAuthEvent());
                     },
                     child: Text('Entrar'),
                     style: ElevatedButton.styleFrom(
@@ -68,14 +67,9 @@ class LoginPage extends StatelessWidget {
                     ),
                   ),
                   SizedBox(height: 16.0),
+                  /*
                   ElevatedButton(
-                    onPressed: () {
-                      Navigator.pop(context);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => HomePage()),
-                      );
-                    },
+                    onPressed: () {},
                     child: Text('Entrar con Google'),
                     style: ElevatedButton.styleFrom(
                       primary: acBlue,
@@ -85,7 +79,24 @@ class LoginPage extends StatelessWidget {
                       ),
                     ),
                   ),
+                  
                   SizedBox(height: 16.0),
+                  */
+
+                  ElevatedButton(
+                    onPressed: () {
+                      BlocProvider.of<AuthBloc>(context).add(BackToHomeEvent());
+                    },
+                    child: Text('Atrás',
+                        style: TextStyle(decoration: TextDecoration.underline)),
+                    style: ElevatedButton.styleFrom(
+                      primary: acOrange50,
+                      onPrimary: Colors.white,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                  ),
                 ],
               ),
             ),

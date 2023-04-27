@@ -1,8 +1,13 @@
+import 'package:aguacapi/auth/bloc/auth_bloc.dart';
 import 'package:aguacapi/content/crear_usuario.dart';
+import 'package:aguacapi/providers/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/content/login.dart';
 import 'package:aguacapi/content/home_page.dart';
 import 'package:aguacapi/colors/colors.dart';
+
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:provider/provider.dart';
 
 class LandingPage extends StatelessWidget {
   const LandingPage({super.key});
@@ -23,22 +28,23 @@ class LandingPage extends StatelessWidget {
                 SizedBox(height: 5.0),
                 Text('AguaCapi', style: Theme.of(context).textTheme.headline5),
                 SizedBox(height: 32.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: acBlue50,
-                    fixedSize: const Size(200, 50),
-                  ),
-                  // insertar botón de iniciar sesión con texto e icono
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => LoginPage()),
-                    );
-                  },
-                  child: Text('Inicia sesión',
-                      style:
-                          TextStyle(fontSize: 20.0, color: acBackgroundWhite)),
-                ),
+                Consumer<LoginProvider>(builder: (context, providerLogin, _) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: acBlue50,
+                      fixedSize: const Size(200, 50),
+                    ),
+                    // insertar botón de iniciar sesión con texto e icono
+                    onPressed: () {
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SelectLoginEvent());
+                      providerLogin.borrarFormularioLogin();
+                    },
+                    child: Text('Inicia sesión',
+                        style: TextStyle(
+                            fontSize: 20.0, color: acBackgroundWhite)),
+                  );
+                }),
                 SizedBox(height: 16.0),
                 // insertar linea divisora
                 Row(
@@ -74,10 +80,8 @@ class LandingPage extends StatelessWidget {
                     fixedSize: const Size(200, 50),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => CrearUsuario()),
-                    );
+                    BlocProvider.of<AuthBloc>(context)
+                        .add(SelectRegisterEvent());
                   },
                   child: Text('Crea una cuenta',
                       style:

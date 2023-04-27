@@ -19,6 +19,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<EmailAuthEvent>(_authEmail);
     on<LoginAuthEvent>(_createAuthEmail);
     on<SignOutEvent>(_signOut);
+    on<SelectLoginEvent>(_loginForm);
+    on<SelectRegisterEvent>(_registerForm);
+    on<BackToHomeEvent>(_backToHome);
   }
 
   FutureOr<void> _authVerification(event, emit) {
@@ -48,8 +51,8 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthSuccessState());
       print("STATE: AuthSuccessState");
     } catch (e) {
-      emit(AuthErrorState(eMsg: "Error con login de Firebase"));
-      print("STATE: AuthErrorState");
+      emit(AuthErrorLoginState(eMsg: "Verifique datos de inicio de sesión"));
+      print("STATE: AuthErrorLoginState");
     }
   }
 
@@ -57,13 +60,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(AuthLoadingState());
     try {
       await _authRepo.createAccount();
-      // determinar si cayó en try o catch
-
       emit(AuthSuccessState());
       print("STATE: AuthSuccessState");
     } catch (e) {
-      emit(AuthErrorState(eMsg: "Error al crear cuenta de Firebase"));
-      print("STATE: AuthErrorState");
+      emit(AuthErrorRegisterState(eMsg: "Verifique datos de registro"));
+      print("STATE: AuthErrorRegisterState");
     }
   }
 
@@ -76,7 +77,23 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       print("STATE: SignOutSuccessState - SESIÓN CERRADA!");
     } catch (e) {
       emit(AuthErrorState(eMsg: "Error al cerrar sesión"));
-      print("STATE: AuthErrorState al cerrar sesion");
+      print("STATE: AuthErrorState - al cerrar sesion");
     }
+  }
+
+// Hacer futures de register y loginform que muestre las pantallas (evitar push)
+  FutureOr<void> _registerForm(event, emit) async {
+    emit(AuthLoadingState());
+    emit(AuthPendingRegisterState());
+  }
+
+  FutureOr<void> _loginForm(event, emit) async {
+    emit(AuthLoadingState());
+    emit(AuthPendingLoginState());
+  }
+
+  FutureOr<void> _backToHome(event, emit) async {
+    emit(AuthLoadingState());
+    emit(BackToHomeState());
   }
 }

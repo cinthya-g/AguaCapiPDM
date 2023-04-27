@@ -239,11 +239,25 @@ class CrearUsuario extends StatelessWidget {
                 ElevatedButton(
                   onPressed: () {
                     BlocProvider.of<AuthBloc>(context).add(LoginAuthEvent());
-                    BlocProvider.of<AuthBloc>(context).add(VerifyAuthEvent());
                   },
                   child: Text('Registrarse'),
                   style: ElevatedButton.styleFrom(
                     primary: Color.fromARGB(255, 31, 70, 109),
+                    onPrimary: Colors.white,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: () {
+                    BlocProvider.of<AuthBloc>(context).add(BackToHomeEvent());
+                  },
+                  child: Text('Atrás',
+                      style: TextStyle(decoration: TextDecoration.underline)),
+                  style: ElevatedButton.styleFrom(
+                    primary: acOrange50,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
