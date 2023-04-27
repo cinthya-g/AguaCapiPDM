@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 // Page
 import 'package:aguacapi/content/landing_page.dart';
 import 'package:aguacapi/content/home_page.dart';
-import 'package:aguacapi/content/landing_page.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:aguacapi/content/login.dart';
+import 'package:aguacapi/content/crear_usuario.dart';
 // Bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:aguacapi/auth/bloc/auth_bloc.dart';
@@ -54,11 +55,20 @@ class MyApp extends StatelessWidget {
               return HomePage();
             } else if (state is AuthErrorState ||
                 state is UnAuthState ||
-                state is SignOutSuccessState) {
+                state is SignOutSuccessState ||
+                state is BackToHomeState) {
               return LandingPage();
+            } else if (state is AuthPendingRegisterState ||
+                state is AuthErrorRegisterState) {
+              return CrearUsuario();
+            } else if (state is AuthPendingLoginState ||
+                state is AuthErrorLoginState) {
+              return LoginPage();
             }
-            return Center(
-              child: CircularProgressIndicator(),
+            return Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             );
           },
         ));
