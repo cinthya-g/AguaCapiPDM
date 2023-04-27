@@ -53,7 +53,7 @@ class _WeatherWidgetState extends State<WeatherWidget> {
           leading: SizedBox(
             width: 30,
             height: 30,
-            child: Image.asset(
+            child: Text(
                 "${widget.weatherDataDaily.daily[0].weather![0].icon}.png"),
           ),
           title: Text('$locality,$city',
