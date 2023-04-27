@@ -1,10 +1,19 @@
+import 'package:aguacapi/controller/global_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:aguacapi/content/home_page.dart';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+
+import '../widgets/weatherWidget.dart';
 
 class Perfil extends StatelessWidget {
   Perfil({super.key});
+
+  //#######################################################################
+  final GlobalController globalController =
+      Get.put(GlobalController(), permanent: true);
+//#######################################################################
 
   @override
   Widget build(BuildContext context) {
@@ -273,6 +282,16 @@ class Perfil extends StatelessWidget {
                 ),
               ),
             ),
+            Container(
+                child: Obx(
+              () => globalController.checkloading().isTrue
+                  ? Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : WeatherWidget(
+                      weatherDataDaily:
+                          globalController.getData().getDailyWeather()),
+            )),
             Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
               child: Container(
