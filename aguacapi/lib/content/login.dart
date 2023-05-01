@@ -54,7 +54,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   SizedBox(height: 32.0),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       BlocProvider.of<AuthBloc>(context).add(EmailAuthEvent());
                     },
                     child: Text('Entrar'),

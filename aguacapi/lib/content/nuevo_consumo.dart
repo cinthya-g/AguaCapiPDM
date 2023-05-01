@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'dart:async';
 import 'package:intl/intl.dart';
+import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
+import 'package:provider/provider.dart';
 
 class NuevoConsumo extends StatelessWidget {
   const NuevoConsumo({super.key});
@@ -57,30 +59,28 @@ class NuevoConsumo extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
-              TextField(
-                  controller: null,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Selecciona una fecha',
-                  ),
-                  onTap: () async {
-                    DateTime? pickedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: DateTime(1900),
-                        lastDate: DateTime(2100));
-                    if (pickedDate != null) {
-                      print(pickedDate);
-                      String formattedDate =
-                          DateFormat('yyyy-MM-dd').format(pickedDate);
-                      String formattedDateProvider = formattedDate;
-                      print(formattedDate);
-                      initialDate:
-                      formattedDate;
-                    } else {
-                      print('Date is not selected');
-                    }
-                  }),
+              Consumer<NuevoConsumoProvider>(builder: (context, provider, _) {
+                return TextField(
+                    controller: provider.dateController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Selecciona una fecha',
+                    ),
+                    onTap: () async {
+                      DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now());
+                      if (pickedDate != null) {
+                        String formattedDate =
+                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                        provider.dateController.text = formattedDate;
+                      } else {
+                        print('Date is not selected');
+                      }
+                    });
+              }),
               SizedBox(height: 20),
               Padding(
                 padding: const EdgeInsets.only(left: 8.0),

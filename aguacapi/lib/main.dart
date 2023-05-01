@@ -14,6 +14,8 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:provider/provider.dart';
 import 'package:aguacapi/providers/crear_usuario_provider.dart';
 import 'package:aguacapi/providers/login_provider.dart';
+import 'package:aguacapi/providers/perfil_provider.dart';
+import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,6 +29,9 @@ void main() async {
           create: (context) => CrearUsuarioProvider(),
         ),
         ChangeNotifierProvider(create: (context) => LoginProvider()),
+        ChangeNotifierProvider(create: (context) => PerfilProvider()),
+        ChangeNotifierProvider(
+            create: (context) => NuevoConsumoProvider()..borrarControllers()),
       ],
       child: MyApp(),
     ),
