@@ -133,7 +133,7 @@ class Perfil extends StatelessWidget {
                           children: [
                             Text('Tu meta actual',
                                 style: TextStyle(
-                                    fontSize: 22,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.w500,
                                     color: acBrown)),
                             Consumer<PerfilProvider>(
@@ -340,7 +340,7 @@ class Perfil extends StatelessWidget {
                               ConnectionState.done) {
                             return Text("${snapshot.data!.get("status")}",
                                 style: TextStyle(
-                                    fontSize: 16,
+                                    fontSize: 20,
                                     fontWeight: FontWeight.w400,
                                     color: acBrown));
                           } else {
@@ -366,7 +366,7 @@ class Perfil extends StatelessWidget {
                               style: TextStyle(
                                   fontSize: 13,
                                   fontWeight: FontWeight.w400,
-                                  color: acBrown),
+                                  color: Colors.grey),
                             );
                           } else {
                             return Text(
@@ -511,11 +511,19 @@ class Perfil extends StatelessWidget {
                                             return Container(
                                               // Modificar este parámetros de acuerdo al 100% de la meta
                                               width: ((snapshot.data!.get(
+                                                                      "goalProgress") /
+                                                                  snapshot.data!
+                                                                      .get(
+                                                                          "goal")) *
+                                                              100)
+                                                          .roundToDouble() >=
+                                                      100
+                                                  ? 100
+                                                  : ((snapshot.data!.get(
                                                               "goalProgress") /
                                                           snapshot.data!
                                                               .get("goal")) *
-                                                      100)
-                                                  .roundToDouble(),
+                                                      100),
                                               height: 12,
                                               decoration: BoxDecoration(
                                                   color: Color.fromARGB(
@@ -557,7 +565,7 @@ class Perfil extends StatelessWidget {
                                     'Total de hoy',
                                     style: TextStyle(
                                         fontWeight: FontWeight.w400,
-                                        fontSize: 22),
+                                        fontSize: 24),
                                   ),
                                   Consumer<PerfilProvider>(
                                     builder: (context, perfilProvider, child) {
@@ -589,25 +597,38 @@ class Perfil extends StatelessWidget {
                                   ),
                                   Container(
                                     margin: EdgeInsets.only(top: 20),
-                                    child: ElevatedButton(
-                                      onPressed: () {
-                                        // TODO: Establecer currentIndex de homepage en 3
+                                    child: Consumer<PerfilProvider>(
+                                      builder:
+                                          (context, perfilProvider, child) {
+                                        return ElevatedButton(
+                                          onPressed: () async {
+                                            await perfilProvider
+                                                .getTodayDrinks();
+                                          },
+                                          child: Row(
+                                            children: [
+                                              Icon(Icons.replay_outlined),
+                                              SizedBox(width: 8),
+                                              Text(
+                                                'Actualizar',
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    fontWeight:
+                                                        FontWeight.w400),
+                                              ),
+                                            ],
+                                          ),
+                                          style: ElevatedButton.styleFrom(
+                                            primary: Color.fromRGBO(
+                                                171, 198, 253, 1),
+                                            onPrimary: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(32.0),
+                                            ),
+                                          ),
+                                        );
                                       },
-                                      child: Row(
-                                        children: [
-                                          Icon(Icons.add),
-                                          Text('Añadir'),
-                                        ],
-                                      ),
-                                      style: ElevatedButton.styleFrom(
-                                        primary:
-                                            Color.fromRGBO(171, 198, 253, 1),
-                                        onPrimary: Colors.white,
-                                        shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(32.0),
-                                        ),
-                                      ),
                                     ),
                                   ),
                                 ],

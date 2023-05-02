@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -24,7 +25,7 @@ class PerfilProvider with ChangeNotifier {
     // Query para sacar la data del documento
     var userContent = await userDoc.get();
     final _userContentData = userContent.data()!;
-    print(">> Contenido del usuario: $_userContentData");
+    //print(">> Contenido del usuario: $_userContentData");
 
     return userContent;
   }
@@ -125,8 +126,8 @@ class PerfilProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  // obtener el porcentaje de avance entre progressGoal y goal
-  Future<double> getProgress() async {
+  // Sumar todos los mililitros de las bebidas de HOY del usuario autenticado
+  Future<num> getTodayDrinks() async {
     // Obtener documento cuyo nombre es el ID del usuario autenticado
     var userDoc = await FirebaseFirestore.instance
         .collection("usuarios-aguacapi")
@@ -136,9 +137,24 @@ class PerfilProvider with ChangeNotifier {
     var userContent = await userDoc.get();
     final _userContentData = userContent.data()!;
 
-    // Calcular porcentaje
-    double progressDouble = 0;
-    return progressDouble =
-        (_userContentData["progressGoal"] / _userContentData["goal"]) * 100;
+    // Iterar los documentos de las bebidas donde el idUser sea el del usuario
+    // y sumar las quantity
+    num _todayDrinks = 0;
+    await FirebaseFirestore.instance
+        .collection("bebidas-aguacapi")
+        .where("idUser", isEqualTo: "${FirebaseAuth.instance.currentUser!.uid}")
+        .where("date", isEqualTo: DateTime.now().toString().substring(0, 10))
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        _todayDrinks += element["quantity"];
+      });
+    });
+    print(">> Bebidas de hoy: $_todayDrinks");
+
+    // Actualizar el campo goalProgress del usuario con _todayDrinks
+    await userDoc.update({"goalProgress": _todayDrinks});
+    notifyListeners();
+    return _todayDrinks;
   }
 }
