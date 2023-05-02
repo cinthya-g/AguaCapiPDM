@@ -1,5 +1,6 @@
 import 'package:aguacapi/auth/bloc/auth_bloc.dart';
 import 'package:aguacapi/content/crear_usuario.dart';
+import 'package:aguacapi/providers/crear_usuario_provider.dart';
 import 'package:aguacapi/providers/login_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/content/login.dart';
@@ -74,19 +75,23 @@ class LandingPage extends StatelessWidget {
                   ],
                 ),
                 SizedBox(height: 16.0),
-                ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    primary: acBlue50,
-                    fixedSize: const Size(200, 50),
-                  ),
-                  onPressed: () {
-                    BlocProvider.of<AuthBloc>(context)
-                        .add(SelectRegisterEvent());
-                  },
-                  child: Text('Crea una cuenta',
-                      style:
-                          TextStyle(fontSize: 20.0, color: acBackgroundWhite)),
-                ),
+                Consumer<CrearUsuarioProvider>(
+                    builder: (context, providerCrearUsuario, _) {
+                  return ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: acBlue50,
+                      fixedSize: const Size(200, 50),
+                    ),
+                    onPressed: () {
+                      BlocProvider.of<AuthBloc>(context)
+                          .add(SelectRegisterEvent());
+                      providerCrearUsuario.borrarFormularioCrear();
+                    },
+                    child: Text('Crea una cuenta',
+                        style: TextStyle(
+                            fontSize: 20.0, color: acBackgroundWhite)),
+                  );
+                }),
               ],
             ),
           ),

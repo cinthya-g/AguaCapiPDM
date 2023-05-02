@@ -1,4 +1,6 @@
 import 'dart:async';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
@@ -52,6 +54,10 @@ class CrearUsuarioProvider with ChangeNotifier {
   String get getUsername => usernameController.text;
   String get getPassword => passwordController.text;
   String get getSelectedDate => selectedDate.text;
+  String? get getSex => firstRadioGroupValues[sexo];
+  String? get getRegion => secondRadioGroupValues[region];
+  String? get getActividadFisica => thirdRadioGroupValues[actividadFisica];
+  bool get getPermisoRanking => permisoRanking;
 
   // Permiso de ranking
   bool permisoRanking = true;

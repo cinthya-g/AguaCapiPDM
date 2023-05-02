@@ -52,7 +52,7 @@ class Estadisticas extends StatelessWidget {
                     context: context,
                     initialDate: DateTime.now(),
                     firstDate: DateTime(1900),
-                    lastDate: DateTime(2100));
+                    lastDate: DateTime.now());
                 if (pickedDate != null) {
                   print(pickedDate);
                   String formattedDate =

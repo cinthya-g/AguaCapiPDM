@@ -54,11 +54,11 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             width: 30,
             height: 30,
             child: Image.asset(
-                "${widget.weatherDataDaily.daily[0].weather![0].icon}.png"),
+                "assets/images/${widget.weatherDataDaily.daily[0].weather![0].icon}.png"),
           ),
-          title: Text('$locality,$city',
+          title: Text('$locality, $city',
               style: TextStyle(
-                  fontSize: 16, fontWeight: FontWeight.w400, color: acBrown)),
+                  fontSize: 18, fontWeight: FontWeight.w400, color: acBrown)),
           subtitle: Text(date),
           trailing: Text(
             '${widget.weatherDataDaily.daily[0].temp!.max}°C',
