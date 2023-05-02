@@ -135,6 +135,7 @@ class NuevoConsumoProvider extends ChangeNotifier {
     await FirebaseFirestore.instance
         .collection("bebidas-aguacapi")
         .where("idUser", isEqualTo: "${FirebaseAuth.instance.currentUser!.uid}")
+        .where("date", isEqualTo: DateTime.now().toString().substring(0, 10))
         .get()
         .then((value) {
       value.docs.forEach((element) {

@@ -17,7 +17,8 @@ const acGrey50 = Color.fromARGB(255, 49, 49, 49);
 
 const acBrown = Color.fromARGB(255, 41, 31, 31);
 
-const acError = Color.fromARGB(255, 214, 73, 7);
+const acError = Color.fromARGB(255, 182, 26, 5);
+const acSuccess = Color.fromARGB(255, 46, 201, 100);
 
 const acSurfaceWhite = Color(0xFFFFFBFA);
 const acBackgroundWhite = Colors.white;

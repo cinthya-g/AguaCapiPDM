@@ -52,9 +52,34 @@ class MyApp extends StatelessWidget {
         home: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthErrorState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.eMsg),
                 backgroundColor: acError,
+              ));
+            } else if (state is AuthErrorLoginState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.eMsg),
+                backgroundColor: acError,
+              ));
+            } else if (state is AuthErrorRegisterState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.eMsg),
+                backgroundColor: acError,
+              ));
+            } else if (state is AuthSuccessState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.sMsg),
+                backgroundColor: acSuccess,
+              ));
+            } else if (state is SignOutSuccessState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.sMsg),
+                backgroundColor: acSuccess,
               ));
             }
           },

@@ -10,7 +10,10 @@ abstract class AuthState extends Equatable {
 class AuthInitial extends AuthState {}
 
 class AuthSuccessState extends AuthState {
-  // Mostrar home page
+  final String sMsg;
+  AuthSuccessState({this.sMsg = "¡Sesión iniciada correctamente!"});
+  @override
+  List<Object> get props => [sMsg];
 }
 
 class AuthPendingLoginState extends AuthState {
@@ -28,7 +31,7 @@ class BackToHomeState extends AuthState {
 class SignOutSuccessState extends AuthState {
   // cerrar sesion
   final String sMsg;
-  SignOutSuccessState({this.sMsg = "Sesión cerrada exitosamente"});
+  SignOutSuccessState({this.sMsg = "Sesión cerrada exitosamente, ¡adiós!"});
   @override
   List<Object> get props => [sMsg];
 }
