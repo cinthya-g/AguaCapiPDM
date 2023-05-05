@@ -29,6 +29,8 @@ class SignOutSuccessState extends AuthState {
   // cerrar sesion
   final String sMsg;
   SignOutSuccessState({this.sMsg = "Sesión cerrada exitosamente"});
+  @override
+  List<Object> get props => [sMsg];
 }
 
 class AuthErrorState extends AuthState {

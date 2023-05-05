@@ -28,40 +28,53 @@ class GlobalController extends GetxController {
   }
 
   getlocation() async {
-    bool isServiceEnabled;
-    LocationPermission locationPermission;
+    try {
+      bool isServiceEnabled;
+      LocationPermission locationPermission;
 
-    isServiceEnabled = await Geolocator.isLocationServiceEnabled();
-    //return if services are not enabled
-    if (!isServiceEnabled) {
-      return Future.error('Location services are not enabled.');
-    }
-    //status of permission
-    locationPermission = await Geolocator.checkPermission();
-
-    if (locationPermission == LocationPermission.deniedForever) {
-      return Future.error(
-          'Location permissions are permantly denied, we cannot request permissions.');
-    } else if (locationPermission == LocationPermission.denied) {
-      //Request permission
-      locationPermission = await Geolocator.requestPermission();
-      if (locationPermission == LocationPermission.denied) {
-        return Future.error('Location permissions are denied');
+      isServiceEnabled = await Geolocator.isLocationServiceEnabled();
+      //return if services are not enabled
+      if (!isServiceEnabled) {
+        throw Exception('Location services are not enabled.');
       }
-    }
-    //Get current location
-    return await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high)
-        .then((value) {
+      //status of permission
+      locationPermission = await Geolocator.checkPermission();
+
+      if (locationPermission == LocationPermission.deniedForever) {
+        throw Exception(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      } else if (locationPermission == LocationPermission.denied) {
+        //Request permission
+        locationPermission = await Geolocator.requestPermission();
+        if (locationPermission == LocationPermission.denied) {
+          throw Exception('Location permissions are denied');
+        }
+      }
+      //Get current location
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+
       //update values
-      _latitude.value = value.latitude;
-      _longitude.value = value.longitude;
+      _latitude.value = position.latitude;
+      _longitude.value = position.longitude;
 
       //Calling weatherapi
-      return FetchWeatherAPI().processData(value.latitude, value.longitude);
-    }).then((value) {
-      weatherData.value = value;
+      final weather = await FetchWeatherAPI()
+          .processData(position.latitude, position.longitude);
+
+      weatherData.value = weather;
+
       _isloading.value = false;
-    });
+    } catch (e) {
+      // handle the exception here
+      // final weatherE = await FetchWeatherAPI()
+      //     .processData(24.097796401987143, -93.4890410734313);
+
+      //   weatherData.value = weatherE;
+
+      //_isloading.value = false;
+      print('Error occurred: $e');
+      //show error message to user
+    }
   }
 }

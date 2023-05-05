@@ -127,13 +127,9 @@ class CrearUsuario extends StatelessWidget {
                           firstDate: DateTime(1900),
                           lastDate: DateTime(2100));
                       if (pickedDate != null) {
-                        print(pickedDate);
                         String formattedDate =
                             DateFormat('yyyy-MM-dd').format(pickedDate);
                         provider.selectedDate.text = formattedDate;
-                        print(formattedDate);
-                        initialDate:
-                        formattedDate;
                       } else {
                         print('Date is not selected');
                       }
@@ -257,7 +253,7 @@ class CrearUsuario extends StatelessWidget {
                   child: Text('Atrás',
                       style: TextStyle(decoration: TextDecoration.underline)),
                   style: ElevatedButton.styleFrom(
-                    primary: acOrange50,
+                    backgroundColor: acOrange50,
                     onPrimary: Colors.white,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10),
