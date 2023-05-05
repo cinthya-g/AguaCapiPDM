@@ -1,3 +1,4 @@
+import 'package:aguacapi/auth/bloc/auth_bloc.dart';
 import 'package:aguacapi/content/perfil.dart';
 import 'package:aguacapi/controller/global_controller.dart';
 import 'package:flutter/material.dart';
@@ -6,6 +7,7 @@ import 'package:aguacapi/content/ranking.dart';
 import 'package:aguacapi/content/estadisticas.dart';
 import 'package:aguacapi/content/nuevo_consumo.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get/get.dart';
 import 'package:intl/number_symbols_data.dart';
 
@@ -42,7 +44,16 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        actions: [
+          IconButton(
+            icon: Icon(Icons.logout, semanticLabel: 'logout'),
+            onPressed: () {
+              BlocProvider.of<AuthBloc>(context).add(SignOutEvent());
+            },
+          ),
+        ],
+      ),
       body: IndexedStack(
         index: currentIndex,
         children: _pagelist,

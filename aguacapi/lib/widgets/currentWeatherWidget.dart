@@ -1,29 +1,31 @@
-import 'package:aguacapi/controller/global_controller.dart';
-import 'package:aguacapi/model/weather_data_daily.dart';
+import 'package:aguacapi/model/weather_data.dart';
+import 'package:aguacapi/model/weather_data_current.dart';
 import 'package:flutter/material.dart';
+import 'package:aguacapi/controller/global_controller.dart';
+import 'package:aguacapi/model/weather_data_current.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 import '../colors/colors.dart';
 
-class WeatherWidget extends StatefulWidget {
-  final WeatherDataDaily weatherDataDaily;
-  const WeatherWidget({Key? key, required this.weatherDataDaily})
+class CurrentWeatherWidget extends StatefulWidget {
+  final WeatherDataCurrent currentWeather;
+  const CurrentWeatherWidget({Key? key, required this.currentWeather})
       : super(key: key);
 
   @override
-  State<WeatherWidget> createState() => _WeatherWidgetState();
+  State<CurrentWeatherWidget> createState() => _CurrentWeatherWidgetState();
 }
 
-class _WeatherWidgetState extends State<WeatherWidget> {
+class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
   String city = "";
   String locality = "";
   String date = DateFormat('yMMMMd').format(DateTime.now());
   //#######################################################################
   final GlobalController globalController =
       Get.put(GlobalController(), permanent: true);
-//#######################################################################
+  //#######################################################################
 
   @override
   void initState() {
@@ -41,6 +43,24 @@ class _WeatherWidgetState extends State<WeatherWidget> {
     });
   }
 
+  String getMessage(double? temp) {
+    if (temp! < -10) {
+      return "Aguas! Hace un friazo!!!";
+    } else if (temp >= -10 && temp < 0) {
+      return "Ta fresco mijo! Abrigese machin!";
+    } else if (temp >= 0 && temp < 10) {
+      return "Hace frillito. Ponte chamarra!";
+    } else if (temp >= 10 && temp < 20) {
+      return "Hace fresco. Ponte algo comodo.";
+    } else if (temp >= 20 && temp < 30) {
+      return "Los calores se ponen duros. A tomar chingos de agua!";
+    } else if (temp >= 30 && temp < 40) {
+      return "Hidratese morro , la calor esta recia!";
+    } else {
+      return "Afuera es el infierno, tomar agua no te salvara!";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,14 +74,14 @@ class _WeatherWidgetState extends State<WeatherWidget> {
             width: 30,
             height: 30,
             child: Image.asset(
-                "assets/images/${widget.weatherDataDaily.daily[0].weather![0].icon}.png"),
+                "assets/images/${widget.currentWeather.current!.weather![0].icon}.png"),
           ),
-          title: Text('$locality, $city',
+          title: Text(getMessage(widget.currentWeather.current!.temp),
               style: TextStyle(
                   fontSize: 18, fontWeight: FontWeight.w400, color: acBrown)),
-          subtitle: Text(date),
+          subtitle: Text('$locality, $city'),
           trailing: Text(
-            '${widget.weatherDataDaily.daily[0].temp!.max}°C',
+            '${widget.currentWeather.current!.temp}°C',
             style: TextStyle(
                 fontSize: 32, fontWeight: FontWeight.w400, color: acBrown),
           ),

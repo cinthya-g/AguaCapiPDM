@@ -5,10 +5,6 @@
 import FlutterMacOS
 import Foundation
 
-<<<<<<< Updated upstream
-
-func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
-=======
 import cloud_firestore
 import desktop_webview_auth
 import firebase_auth
@@ -33,5 +29,4 @@ func RegisterGeneratedPlugins(registry: FlutterPluginRegistry) {
   PathProviderPlugin.register(with: registry.registrar(forPlugin: "PathProviderPlugin"))
   SignInWithApplePlugin.register(with: registry.registrar(forPlugin: "SignInWithApplePlugin"))
   TwitterLoginPlugin.register(with: registry.registrar(forPlugin: "TwitterLoginPlugin"))
->>>>>>> Stashed changes
 }
