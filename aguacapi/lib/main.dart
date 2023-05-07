@@ -36,7 +36,8 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => NuevoConsumoProvider()..borrarControllers()),
         ChangeNotifierProvider(create: (context) => ChoosePictureProvider()),
-        ChangeNotifierProvider(create: (context) => ConfiguracionProvider()),
+        ChangeNotifierProvider(
+            create: (context) => ConfiguracionProvider()..borrarValores()),
       ],
       child: MyApp(),
     ),

@@ -61,11 +61,119 @@ class ConfiguracionProvider with ChangeNotifier {
   // ---- EDICION DEL PERFIL -----
   // Controllers
   var newUsername = TextEditingController();
+  // Si es -1 es que no lo cambió
+  int sexo = -1;
+  int actividadFisica = -1;
+  int region = -1;
 
   var sexRadioGroupValues = {
     0: 'Hombre',
     1: 'Mujer',
     2: 'Otro',
   };
-  int sexo = 0;
+
+  var regionRadioGroupValues = {
+    0: 'Fría',
+    1: 'Templada',
+    2: 'Calurosa',
+  };
+
+  var actividadFisicaRadioGroupValues = {
+    0: 'Baja',
+    1: 'Media',
+    2: 'Alta',
+  };
+
+  setSexo(int value) {
+    sexo = value;
+    notifyListeners();
+  }
+
+  setActividadFisica(int value) {
+    actividadFisica = value;
+    notifyListeners();
+  }
+
+  setRegion(int value) {
+    region = value;
+    notifyListeners();
+  }
+
+  // Borrar valores
+  void borrarValores() {
+    newUsername.text = "";
+    sexo = -1;
+    actividadFisica = -1;
+    region = -1;
+    notifyListeners();
+  }
+
+  // Guardar cambios en el documento del usuario
+  Future<bool> actualizarInformacion() async {
+    // Sí cambió el username
+    if (newUsername.text != "") {
+      var userDoc = await FirebaseFirestore.instance
+          .collection("usuarios-aguacapi")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      await userDoc.update({"username": newUsername.text});
+    }
+    // Sí cambio la variable "sexo"
+    if (sexo != -1) {
+      String _newSex = '';
+      if (sexo == 0)
+        _newSex = 'Hombre';
+      else if (sexo == 1)
+        _newSex = 'Mujer';
+      else if (sexo == 2) _newSex = 'Otro';
+      var userDoc = await FirebaseFirestore.instance
+          .collection("usuarios-aguacapi")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      await userDoc.update({"sex": _newSex});
+    }
+
+    // Sí cambió la variable "region"
+    if (region != -1) {
+      String _newRegion = '';
+      if (region == 0)
+        _newRegion = 'Fría';
+      else if (region == 1)
+        _newRegion = 'Templada';
+      else if (region == 2) _newRegion = 'Calurosa';
+      var userDoc = await FirebaseFirestore.instance
+          .collection("usuarios-aguacapi")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      await userDoc.update({"region": _newRegion});
+    }
+
+    // Sí cambió la variable "actividadFisica"
+    if (actividadFisica != -1) {
+      String _newActividadFisica = '';
+      if (actividadFisica == 0)
+        _newActividadFisica = 'Baja';
+      else if (actividadFisica == 1)
+        _newActividadFisica = 'Media';
+      else if (actividadFisica == 2) _newActividadFisica = 'Alta';
+      var userDoc = await FirebaseFirestore.instance
+          .collection("usuarios-aguacapi")
+          .doc(FirebaseAuth.instance.currentUser!.uid);
+      await userDoc.update({"physicalActivity": _newActividadFisica});
+    }
+
+    if (newUsername.text != "" ||
+        sexo != -1 ||
+        region != -1 ||
+        actividadFisica != -1)
+      return true;
+    else
+      return false;
+  }
+
+  // Cambiar rankingPermission
+  Future<bool> cambiarRankingPermission(bool value) async {
+    var userDoc = await FirebaseFirestore.instance
+        .collection("usuarios-aguacapi")
+        .doc(FirebaseAuth.instance.currentUser!.uid);
+    await userDoc.update({"rankingPermission": value});
+    return true;
+  }
 }

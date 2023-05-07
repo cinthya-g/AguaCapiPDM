@@ -45,7 +45,18 @@ class EditarPerfil extends StatelessWidget {
           Container(
             margin: EdgeInsets.all(12),
             child: Text('Cambia el o los datos que desees modificar',
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          Container(
+            margin: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: Text('Nombre de usuario',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: acOrange50)),
           ),
           SizedBox(height: 10),
           Consumer<ConfiguracionProvider>(
@@ -63,7 +74,7 @@ class EditarPerfil extends StatelessWidget {
                       margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
                       child: TextFormField(
                         decoration: InputDecoration(
-                          labelText: 'Nombre de usuario',
+                          labelText: 'Nuevo nombre de usuario',
                           hintText: '${snapshot.data!.get("username")}',
                           border: OutlineInputBorder(),
                           suffixIcon: Icon(Icons.person),
@@ -76,7 +87,226 @@ class EditarPerfil extends StatelessWidget {
                   });
             },
           ),
-          _divider()
+          _divider(),
+          Container(
+            margin: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: Text('Sexo',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: acOrange50)),
+          ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('usuarios-aguacapi')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                String _sexo = snapshot.data!.get("sex");
+                return Container(
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 10,
+                  ),
+                  child: Text('Actual: $_sexo',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: acOrange)),
+                );
+              }),
+          Consumer<ConfiguracionProvider>(
+            builder: (context, configProvider, child) {
+              return Column(
+                // generar 3 radio buttons
+
+                children: configProvider.sexRadioGroupValues.entries
+                    .map(
+                      (entry) => RadioListTile(
+                        title: Text(entry.value),
+                        value: entry.key,
+                        groupValue: configProvider.sexo,
+                        onChanged: (newValue) {
+                          configProvider.setSexo(newValue!);
+                        },
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+          ),
+          _divider(),
+          Container(
+            margin: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: Text('Región',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: acOrange50)),
+          ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('usuarios-aguacapi')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                String _region = snapshot.data!.get("region");
+                return Container(
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 10,
+                  ),
+                  child: Text('Actual: $_region',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: acOrange)),
+                );
+              }),
+          Consumer<ConfiguracionProvider>(
+            builder: (context, configProvider, child) {
+              return Column(
+                children: configProvider.regionRadioGroupValues.entries
+                    .map(
+                      (entry) => RadioListTile(
+                        title: Text(entry.value),
+                        value: entry.key,
+                        groupValue: configProvider.region,
+                        onChanged: (newValue) {
+                          configProvider.setRegion(newValue!);
+                        },
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+          ),
+          _divider(),
+          Container(
+            margin: EdgeInsets.only(
+              left: 20,
+              bottom: 10,
+            ),
+            child: Text('Actividad física',
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: acOrange50)),
+          ),
+          StreamBuilder<DocumentSnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('usuarios-aguacapi')
+                  .doc(FirebaseAuth.instance.currentUser!.uid)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (!snapshot.hasData) {
+                  return CircularProgressIndicator();
+                }
+                String _activity = snapshot.data!.get("physicalActivity");
+                return Container(
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 10,
+                  ),
+                  child: Text('Actual: $_activity',
+                      style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          color: acOrange)),
+                );
+              }),
+          Consumer<ConfiguracionProvider>(
+            builder: (context, configProvider, child) {
+              return Column(
+                // generar 3 radio buttons
+
+                children: configProvider.actividadFisicaRadioGroupValues.entries
+                    .map(
+                      (entry) => RadioListTile(
+                        title: Text(entry.value),
+                        value: entry.key,
+                        groupValue: configProvider.actividadFisica,
+                        onChanged: (newValue) {
+                          configProvider.setActividadFisica(newValue!);
+                        },
+                      ),
+                    )
+                    .toList(),
+              );
+            },
+          ),
+          // Botones de GUARDAR y DESCARTAR
+          Container(
+            margin: EdgeInsets.only(top: 20, bottom: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Consumer<ConfiguracionProvider>(
+                  builder: (context, configProvider, child) {
+                    return ElevatedButton(
+                      onPressed: () async {
+                        if (await configProvider.actualizarInformacion()) {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text('Información actualizada'),
+                                backgroundColor: acSuccess,
+                              ),
+                            );
+                          Navigator.pop(context);
+                        } else {
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text('No hay nada que actualizar '),
+                                backgroundColor: acOrange50,
+                              ),
+                            );
+                        }
+                      },
+                      child: Text('Guardar'),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: acBlue50,
+                        foregroundColor: acSurfaceWhite,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  child: Text('Descartar'),
+                  style: ElevatedButton.styleFrom(
+                    primary: acOrange,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          SizedBox(
+            height: 10,
+          ),
         ],
       ),
     );
@@ -84,7 +314,7 @@ class EditarPerfil extends StatelessWidget {
 
   Widget _divider() {
     return Container(
-      margin: EdgeInsets.only(left: 20, right: 20),
+      margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
       child: Divider(
         color: acOrange,
         thickness: 1,

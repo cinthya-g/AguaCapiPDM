@@ -50,13 +50,18 @@ class Configuracion extends StatelessWidget {
             border: Border.all(color: Colors.black, width: 1),
             borderRadius: BorderRadius.circular(10),
           ),
-          child: ListTile(
-            leading: Icon(Icons.contacts),
-            title: Text('Información de perfil'),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => EditarPerfil()),
+          child: Consumer<ConfiguracionProvider>(
+            builder: (context, configProvider, child) {
+              return ListTile(
+                leading: Icon(Icons.contacts),
+                title: Text('Información de cáculo de meta y perfil'),
+                onTap: () {
+                  configProvider.borrarValores();
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => EditarPerfil()),
+                  );
+                },
               );
             },
           ),
@@ -74,7 +79,98 @@ class Configuracion extends StatelessWidget {
           child: ListTile(
             leading: Icon(Icons.privacy_tip),
             title: Text('Privacidad del ranking'),
-            onTap: () {},
+            onTap: () {
+              // show dialog
+              showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Privacidad del ranking",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: acBlue,
+                              fontSize: 24)),
+                      content: Text(
+                          "El ranking te permite ver tu desempeño en comparación con otros usuarios.\nSi activas esta opción, tu nombre de usuario aparecerá en el ranking.\nSi la desactivas, no aparecerás. Es reversible.",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w400,
+                              fontSize: 18,
+                              color: acBrown)),
+                      actions: [
+                        Consumer<ConfiguracionProvider>(
+                          builder: (context, configProvider, child) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 8.0),
+                              child: ElevatedButton(
+                                child: Text('Desactivar'),
+                                onPressed: () async {
+                                  if (await configProvider
+                                      .cambiarRankingPermission(false)) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Ranking desactivado"),
+                                      backgroundColor: acOrange,
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text(
+                                          "Error al desactivar el ranking"),
+                                      backgroundColor: acError,
+                                    ));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: acBrown,
+                                  backgroundColor: acOrange,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                        Consumer<ConfiguracionProvider>(
+                          builder: (context, configProvider, child) {
+                            return Padding(
+                              padding: const EdgeInsets.only(right: 12.0),
+                              child: ElevatedButton(
+                                child: Text('Activar'),
+                                onPressed: () async {
+                                  if (await configProvider
+                                      .cambiarRankingPermission(true)) {
+                                    Navigator.of(context).pop();
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Ranking activado"),
+                                      backgroundColor: acSuccess,
+                                    ));
+                                  } else {
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content:
+                                          Text("Error al activar el ranking"),
+                                      backgroundColor: acError,
+                                    ));
+                                  }
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  foregroundColor: acBackgroundWhite,
+                                  backgroundColor: acBlue50,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                              ),
+                            );
+                          },
+                        ),
+                      ],
+                    );
+                  });
+            },
           ),
         ),
         Consumer<ChoosePictureProvider>(builder: (context, pictureProvider, _) {
@@ -151,7 +247,7 @@ class Configuracion extends StatelessWidget {
               ),
               child: ListTile(
                 leading: Icon(Icons.camera_alt),
-                title: Text('Foto de perfil'),
+                title: Text('Cambiar foto de perfil (galería)'),
               ),
             )
           : Container(

@@ -499,7 +499,6 @@ class Perfil extends StatelessWidget {
                                         double _percent =
                                             ((_current / _goal) * 100)
                                                 .ceilToDouble();
-
                                         return Container(
                                           // Modificar este parámetros de acuerdo al 100% de la meta
                                           width: _percent > 100.0
@@ -526,7 +525,7 @@ class Perfil extends StatelessWidget {
                               margin: EdgeInsets.only(left: 20, top: 20),
                               child: Column(
                                 children: [
-                                  SizedBox(height: 35),
+                                  SizedBox(height: 20),
                                   Text(
                                     'Total de hoy',
                                     style: TextStyle(
@@ -545,15 +544,78 @@ class Perfil extends StatelessWidget {
                                         if (!snapshot.hasData) {
                                           return CircularProgressIndicator();
                                         }
-                                        String text = snapshot.data!
+                                        String _text = snapshot.data!
                                             .get('goalProgress')
                                             .toString();
-                                        return Text(
-                                          "${text} ml",
-                                          style: TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 32,
-                                              color: acBlue),
+                                        bool _permission = snapshot.data!
+                                            .get('rankingPermission');
+
+                                        return Column(
+                                          children: [
+                                            Text(
+                                              "${_text} ml",
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 32,
+                                                  color: acBlue),
+                                            ),
+                                            SizedBox(height: 15),
+                                            Container(
+                                                height: 40,
+                                                width: 155,
+                                                decoration: BoxDecoration(
+                                                    color: Color.fromRGBO(
+                                                        171, 198, 253, 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: _permission
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            "Ranking ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 20,
+                                                                color: acBlue),
+                                                          ),
+                                                          SizedBox(width: 3),
+                                                          Icon(
+                                                            Icons
+                                                                .check_circle_rounded,
+                                                            color: acGreen150,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            "Ranking ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 20,
+                                                                color: acBlue),
+                                                          ),
+                                                          SizedBox(width: 3),
+                                                          Icon(
+                                                            Icons.cancel,
+                                                            color: acOrange150,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      )),
+                                          ],
                                         );
                                       },
                                     );
