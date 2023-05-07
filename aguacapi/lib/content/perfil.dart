@@ -1,4 +1,5 @@
 import 'package:aguacapi/controller/global_controller.dart';
+import 'package:aguacapi/widgets/currentWeatherWidget.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:flutter/services.dart';
@@ -456,9 +457,10 @@ class Perfil extends StatelessWidget {
                   ? Center(
                       child: CircularProgressIndicator(),
                     )
-                  : WeatherWidget(
-                      weatherDataDaily:
-                          globalController.getData().getDailyWeather()),
+                  : CurrentWeatherWidget(
+                      currentWeather:
+                          globalController.getData().getCurrentWeather(),
+                    ),
             )),
             Padding(
               padding: EdgeInsets.fromLTRB(8, 0, 8, 0),
