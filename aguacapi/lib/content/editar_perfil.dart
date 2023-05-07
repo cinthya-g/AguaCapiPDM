@@ -1,5 +1,9 @@
+import 'package:aguacapi/providers/configuracion_provider.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:provider/provider.dart';
 
 class EditarPerfil extends StatelessWidget {
   const EditarPerfil({super.key});
@@ -37,8 +41,53 @@ class EditarPerfil extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Container(
+            margin: EdgeInsets.all(12),
+            child: Text('Cambia el o los datos que desees modificar',
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(height: 10),
+          Consumer<ConfiguracionProvider>(
+            builder: (context, configProvider, child) {
+              return StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection('usuarios-aguacapi')
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return CircularProgressIndicator();
+                    }
+                    return Container(
+                      margin: EdgeInsets.only(left: 20, right: 20, bottom: 20),
+                      child: TextFormField(
+                        decoration: InputDecoration(
+                          labelText: 'Nombre de usuario',
+                          hintText: '${snapshot.data!.get("username")}',
+                          border: OutlineInputBorder(),
+                          suffixIcon: Icon(Icons.person),
+                        ),
+                        controller: configProvider.newUsername,
+                        keyboardType: TextInputType.name,
+                        onChanged: (value) {},
+                      ),
+                    );
+                  });
+            },
+          ),
+          _divider()
         ],
+      ),
+    );
+  }
+
+  Widget _divider() {
+    return Container(
+      margin: EdgeInsets.only(left: 20, right: 20),
+      child: Divider(
+        color: acOrange,
+        thickness: 1,
       ),
     );
   }

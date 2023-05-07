@@ -57,4 +57,15 @@ class ConfiguracionProvider with ChangeNotifier {
     _pictureProvider.borrarPPhoto();
     notifyListeners();
   }
+
+  // ---- EDICION DEL PERFIL -----
+  // Controllers
+  var newUsername = TextEditingController();
+
+  var sexRadioGroupValues = {
+    0: 'Hombre',
+    1: 'Mujer',
+    2: 'Otro',
+  };
+  int sexo = 0;
 }

@@ -45,19 +45,21 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
 
   String getMessage(double? temp) {
     if (temp! < -10) {
-      return "Aguas! Hace un friazo!!!";
+      return "¡No olvides tus 3 capas de chamarras!";
     } else if (temp >= -10 && temp < 0) {
-      return "Ta fresco mijo! Abrigese machin!";
+      return "¡No olvides tus 3 capas de chamarras!";
     } else if (temp >= 0 && temp < 10) {
-      return "Hace frillito. Ponte chamarra!";
+      return "Hace bastante frío hoy, ¿y si tomas algo caliente?";
     } else if (temp >= 10 && temp < 20) {
-      return "Hace fresco. Ponte algo comodo.";
-    } else if (temp >= 20 && temp < 30) {
-      return "Los calores se ponen duros. A tomar chingos de agua!";
+      return "Un clima frío pero agradable, ¿y si tomas algo relajante?";
+    } else if (temp >= 20 && temp < 26) {
+      return "El clima está fresco, pero no te confíes, ¡bebe algo!";
+    } else if (temp >= 26 && temp < 30) {
+      return "Ya hace algo de calor, ¡recuerda llevar tu botella de agua contigo!";
     } else if (temp >= 30 && temp < 40) {
-      return "Hidratese morro , la calor esta recia!";
+      return "La deshidratación es un problema serio, ¡bebe agua!";
     } else {
-      return "Afuera es el infierno, tomar agua no te salvara!";
+      return "Huye del infierno";
     }
   }
 
