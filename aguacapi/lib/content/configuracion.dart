@@ -72,19 +72,6 @@ class Configuracion extends StatelessWidget {
             borderRadius: BorderRadius.circular(10),
           ),
           child: ListTile(
-            leading: Icon(Icons.key),
-            title: Text('Email y contraseña'),
-            onTap: () {},
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.fromLTRB(8, 8, 8, 4),
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            border: Border.all(color: Colors.black, width: 1),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: ListTile(
             leading: Icon(Icons.privacy_tip),
             title: Text('Privacidad del ranking'),
             onTap: () {},
@@ -103,27 +90,44 @@ class Configuracion extends StatelessWidget {
                           builder: (context, configProvider, _) {
                         return ElevatedButton(
                             onPressed: () async {
-                              if(await configProvider.actualizarFotoPerfil()) {
-configProvider.borrarSeleccionFoto();
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "Foto de perfil actualizada"),
-                                            backgroundColor: acSuccess,));
+                              if (await configProvider.actualizarFotoPerfil()) {
+                                configProvider.borrarSeleccionFoto();
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text("Foto de perfil actualizada"),
+                                  backgroundColor: acSuccess,
+                                ));
                               } else {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                        content: Text(
-                                            "Error al actualizar la foto de perfil"),
-                                            backgroundColor: acError,));
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(SnackBar(
+                                  content: Text(
+                                      "Error al actualizar la foto de perfil"),
+                                  backgroundColor: acError,
+                                ));
                               }
                             },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor: Colors.white,
+                              backgroundColor: acBlue50,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
                             child: Text("Guardar nueva foto"));
                       }),
-                      ElevatedButton(onPressed: () {
-                          //configProvider.borrarSeleccionFoto();
-                      }, child: Text("Cancelar")),
-                      
+                      Consumer<ConfiguracionProvider>(
+                          builder: (context, configProvider, _) {
+                        return ElevatedButton(
+                            onPressed: () {
+                              configProvider.borrarSeleccionFoto();
+                            },
+                            style: ElevatedButton.styleFrom(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                            ),
+                            child: Text("Cancelar"));
+                      }),
                     ],
                   ),
           );

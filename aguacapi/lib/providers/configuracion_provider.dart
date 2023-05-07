@@ -54,7 +54,7 @@ class ConfiguracionProvider with ChangeNotifier {
   }
 
   void borrarSeleccionFoto() {
-    _pictureProvider.borrarImagen();
+    _pictureProvider.borrarPPhoto();
     notifyListeners();
   }
 }

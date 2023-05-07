@@ -80,7 +80,7 @@ class ChoosePictureProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void borrarPPHoto() {
+  void borrarPPhoto() {
     _newPPicture = null;
     notifyListeners();
   }
