@@ -16,6 +16,9 @@ class ChoosePictureProvider with ChangeNotifier {
   File? _selectedPicture;
   File? get getPicture => _selectedPicture;
 
+  File? _newPPicture;
+  File? get getPPicture => _newPPicture;
+
   void choosePictureFromCamera() async {
     // Comprobar si el permiso de la cámara ha sido concedido
     var cameraStatus = await Permission.camera.status;
@@ -44,8 +47,41 @@ class ChoosePictureProvider with ChangeNotifier {
     }
   }
 
+  void choosePictureFromGallery() async {
+    // Comprobar si el permiso de la galería ha sido concedido
+    var galleryStatus = await Permission.photos.status;
+    if (!galleryStatus.isGranted) {
+      // Si el permiso no ha sido concedido, pedirlo al usuario
+      galleryStatus = await Permission.photos.request();
+      if (!galleryStatus.isGranted) {
+        // Si el usuario rechaza el permiso, salir de la función
+        return;
+      }
+    }
+
+    // Abrir la galería y seleccionar la imagen
+    final _pPickedFile = await ImagePicker().pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 90,
+      maxHeight: 720,
+      maxWidth: 720,
+    );
+    if (_pPickedFile != null) {
+      _newPPicture = File(_pPickedFile.path);
+      notifyListeners();
+    } else {
+      print('No image selected.');
+      return;
+    }
+  }
+
   void borrarImagen() {
     _selectedPicture = null;
+    notifyListeners();
+  }
+
+  void borrarPPHoto() {
+    _newPPicture = null;
     notifyListeners();
   }
 }

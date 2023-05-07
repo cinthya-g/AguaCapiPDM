@@ -600,7 +600,7 @@ class Perfil extends StatelessWidget {
                                               Icon(Icons.replay_outlined),
                                               SizedBox(width: 8),
                                               Text(
-                                                'Actualizar',
+                                                'Evaluar progreso',
                                                 style: TextStyle(
                                                     fontSize: 16,
                                                     fontWeight:

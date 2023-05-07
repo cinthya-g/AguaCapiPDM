@@ -240,17 +240,17 @@ class NuevoConsumo extends StatelessWidget {
                                       provider.dateController.text =
                                           DateFormat('dd-MM-yyyy')
                                               .format(DateTime.now());
-                                      print(
-                                          "fecha del repeated: ${provider.dateController.text}");
+
                                       await provider.guardarNuevaBebida(true);
                                       await provider.getTodayDrinks();
                                       provider.borrarControllers();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(
-                                            "Bebida añadida correctamente"),
-                                        duration: Duration(seconds: 2),
-                                      ));
+                                        ..hideCurrentSnackBar
+                                        ..showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Bebida añadida correctamente"),
+                                          backgroundColor: acSuccess,
+                                        ));
                                     },
                                     icon: Icon(Icons.add_rounded))
                               ],
@@ -284,15 +284,19 @@ class NuevoConsumo extends StatelessWidget {
                   builder: ((context, provider, child) {
                 return ElevatedButton(
                     onPressed: () async {
-                      await provider.guardarNuevaBebida(false);
+                      if (await provider.guardarNuevaBebida(false)) {
+                        ScaffoldMessenger.of(context)
+                          ..hideCurrentSnackBar()
+                          ..showSnackBar(
+                            SnackBar(
+                              content: Text('Bebida guardada'),
+                              backgroundColor: acSuccess,
+                            ),
+                          );
+                      }
+                      ;
                       await provider.getTodayDrinks();
                       provider.borrarControllers();
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Bebida guardada'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
                     },
                     child: Text("Guardar bebida"),
                     style: ElevatedButton.styleFrom(
@@ -387,11 +391,12 @@ class NuevoConsumo extends StatelessWidget {
                                       await provider.deleteDrink(snapshot.id);
                                       await provider.getTodayDrinks();
                                       ScaffoldMessenger.of(context)
-                                          .showSnackBar(SnackBar(
-                                        content: Text(
-                                            "Bebida eliminada correctamente"),
-                                        duration: Duration(seconds: 2),
-                                      ));
+                                        ..hideCurrentSnackBar()
+                                        ..showSnackBar(SnackBar(
+                                          content: Text(
+                                              "Bebida eliminada correctamente"),
+                                          backgroundColor: acOrange50,
+                                        ));
                                     },
                                     icon: Icon(Icons.delete_rounded))
                               ],

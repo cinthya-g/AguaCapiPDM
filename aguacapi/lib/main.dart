@@ -17,6 +17,7 @@ import 'package:aguacapi/providers/login_provider.dart';
 import 'package:aguacapi/providers/perfil_provider.dart';
 import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 import 'package:aguacapi/providers/choose_picture_provider.dart';
+import 'package:aguacapi/providers/configuracion_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +35,8 @@ void main() async {
             create: (context) => PerfilProvider()..getTodayDrinks()),
         ChangeNotifierProvider(
             create: (context) => NuevoConsumoProvider()..borrarControllers()),
-        ChangeNotifierProvider(create: (context) => ChoosePictureProvider())
+        ChangeNotifierProvider(create: (context) => ChoosePictureProvider()),
+        ChangeNotifierProvider(create: (context) => ConfiguracionProvider()),
       ],
       child: MyApp(),
     ),

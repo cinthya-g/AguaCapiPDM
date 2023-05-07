@@ -88,6 +88,7 @@ class NuevoConsumoProvider extends ChangeNotifier {
         "photo": imgUrl,
         "quantity": quantityInt,
         "repeated": esDelMenu,
+        "timestamp": DateTime.now().millisecondsSinceEpoch,
       };
       // crear coleccion de cloud firestore
       CollectionReference _drink =
