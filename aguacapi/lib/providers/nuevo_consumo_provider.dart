@@ -5,6 +5,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 
 import 'package:aguacapi/providers/choose_picture_provider.dart';
+import 'package:intl/intl.dart';
 
 class NuevoConsumoProvider extends ChangeNotifier {
   static final NuevoConsumoProvider _nuevoConsumoProvider =
@@ -54,11 +55,12 @@ class NuevoConsumoProvider extends ChangeNotifier {
   }
 
   //implementar el guardado de datos en Cloud Firestore
-  Future guardarNuevaBebida(bool esDelMenu) async {
+  Future<bool> guardarNuevaBebida(bool esDelMenu) async {
     String imgUrl = "";
     if (!esDelMenu) {
       imgUrl = await _uploadDrinkPhotoToStorage();
     } else {
+      // asignar imagen ya existente de la bebida anterior
       imgUrl = drinkPhotoExists.text;
     }
     // crear el objeto mapa con los demás providers
@@ -73,7 +75,7 @@ class NuevoConsumoProvider extends ChangeNotifier {
       if (nameController.text == "" ||
           quantityController.text == "" ||
           dateController.text == "") {
-        return;
+        return false;
       }
 
       double quantityDouble = double.parse(quantityController.text);
@@ -81,20 +83,23 @@ class NuevoConsumoProvider extends ChangeNotifier {
 
       Map<String, dynamic> _data = {
         "idUser": FirebaseAuth.instance.currentUser!.uid,
-        "date": dateController.text.substring(0, 10),
+        "date": dateController.text,
         "name": nameController.text,
         "photo": imgUrl,
         "quantity": quantityInt,
         "repeated": esDelMenu,
+        "timestamp": DateTime.now().millisecondsSinceEpoch,
       };
       // crear coleccion de cloud firestore
-      CollectionReference _book =
+      CollectionReference _drink =
           FirebaseFirestore.instance.collection("bebidas-aguacapi");
       // guardar datos en cloud firestore
-      await _book.add(_data);
+      await _drink.add(_data);
       notifyListeners();
+      return true;
     } catch (e) {
       print("Error al guardar datos en Cloud Firestore: ${e.toString()}");
+      return false;
     }
   }
 
@@ -105,17 +110,16 @@ class NuevoConsumoProvider extends ChangeNotifier {
         .collection("usuarios-aguacapi")
         .doc("${FirebaseAuth.instance.currentUser!.uid}");
 
-    // Query para sacar la data del documento
-    var userContent = await userDoc.get();
-    final _userContentData = userContent.data()!;
-
     // Iterar los documentos de las bebidas donde el idUser sea el del usuario
     // y sumar las quantity
+    DateTime _fechaHoy = DateTime.now();
+    String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
+    print("formattedDate: $_formattedDate");
     num _todayDrinks = 0;
     await FirebaseFirestore.instance
         .collection("bebidas-aguacapi")
         .where("idUser", isEqualTo: "${FirebaseAuth.instance.currentUser!.uid}")
-        .where("date", isEqualTo: DateTime.now().toString().substring(0, 10))
+        .where("date", isEqualTo: _formattedDate)
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -132,10 +136,13 @@ class NuevoConsumoProvider extends ChangeNotifier {
   // Obtener un array con las bebidas que ha creado el usuario
   Future<List> getMyTotalDrinks() async {
     List<QueryDocumentSnapshot> _myDrinks = [];
+    DateTime _fechaHoy = DateTime.now();
+    String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
     await FirebaseFirestore.instance
         .collection("bebidas-aguacapi")
         .where("idUser", isEqualTo: "${FirebaseAuth.instance.currentUser!.uid}")
-        .where("date", isEqualTo: DateTime.now().toString().substring(0, 10))
+        .where("date", isEqualTo: _formattedDate)
+        .orderBy("name", descending: false)
         .get()
         .then((value) {
       value.docs.forEach((element) {

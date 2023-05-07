@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -109,5 +110,38 @@ class CrearUsuarioProvider with ChangeNotifier {
     actividadFisica = 0;
     permisoRanking = true;
     notifyListeners();
+  }
+
+  // Validaciones
+  bool isValidForm() {
+    if (getEmail.isEmpty ||
+        getUsername.isEmpty ||
+        getPassword.isEmpty ||
+        getSelectedDate.isEmpty ||
+        !isValidEmail(emailController.text)) {
+      return false;
+    }
+    return true;
+  }
+
+  bool isValidEmail(String email) {
+    final emailRegex =
+        RegExp(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$');
+    return emailRegex.hasMatch(email);
+  }
+
+  bool isValidPassword(String pass) {
+    final passRegex = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$');
+    print("pass: ${passRegex.hasMatch(pass)}");
+    return passRegex.hasMatch(pass);
+  }
+
+// Usernam de al menos 5 caracteres
+  bool isValidUsername(String username) {
+    if (username.length < 5) {
+      print("length es de ${username.length}");
+      return false;
+    }
+    return true;
   }
 }
