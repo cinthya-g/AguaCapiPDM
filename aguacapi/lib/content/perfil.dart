@@ -3,14 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:aguacapi/content/nuevo_consumo.dart';
-import 'package:flutterfire_ui/database.dart';
-import 'package:flutterfire_ui/firestore.dart';
-
-import 'package:aguacapi/content/home_page.dart';
 
 import 'package:provider/provider.dart';
 import 'package:aguacapi/providers/perfil_provider.dart';
+import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 
 import '../widgets/weatherWidget.dart';
 
@@ -393,16 +389,10 @@ class Perfil extends StatelessWidget {
                                       color: acBrown, fontSize: 25.0)),
                               content: SingleChildScrollView(
                                 child: ListBody(children: [
-                                  Text(
-                                    'No más de 150 caracteres',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: acGrey50,
-                                        fontWeight: FontWeight.w400),
-                                  ),
                                   Consumer<PerfilProvider>(
                                       builder: (context, provider, _) {
                                     return TextFormField(
+                                        maxLength: 150,
                                         controller:
                                             provider.newStatusController,
                                         keyboardType: TextInputType.text,

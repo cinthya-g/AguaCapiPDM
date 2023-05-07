@@ -239,6 +239,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "3.4.1"
+  firestore_ui:
+    dependency: "direct main"
+    description:
+      name: firestore_ui
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "1.25.1"
   fl_chart:
     dependency: "direct main"
     description:
@@ -291,6 +298,13 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.0.13"
+  flutter_staggered_grid_view:
+    dependency: transitive
+    description:
+      name: flutter_staggered_grid_view
+      url: "https://pub.dartlang.org"
+    source: hosted
+    version: "0.4.1"
   flutter_svg:
     dependency: transitive
     description:

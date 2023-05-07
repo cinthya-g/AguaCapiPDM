@@ -57,6 +57,7 @@ dependencies:
   get: ^4.6.5
   video_player: ^2.6.1
   image_picker: ^0.8.7+4
+  firestore_ui: ^1.25.1
 
 dev_dependencies:
   flutter_test:

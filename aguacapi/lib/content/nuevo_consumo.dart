@@ -68,6 +68,7 @@ class NuevoConsumo extends StatelessWidget {
               SizedBox(height: 10),
               Consumer<NuevoConsumoProvider>(builder: (context, provider, _) {
                 return TextField(
+                    readOnly: true,
                     controller: provider.dateController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -81,10 +82,8 @@ class NuevoConsumo extends StatelessWidget {
                           lastDate: DateTime.now());
                       if (pickedDate != null) {
                         String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                            DateFormat('dd-MM-yyyy').format(pickedDate);
                         provider.dateController.text = formattedDate;
-                      } else {
-                        print('Date is not selected');
                       }
                     });
               }),
@@ -239,9 +238,10 @@ class NuevoConsumo extends StatelessWidget {
                                       provider.drinkPhotoExists.text =
                                           snapshot.data()["photo"];
                                       provider.dateController.text =
-                                          DateTime.now()
-                                              .toString()
-                                              .substring(0, 10);
+                                          DateFormat('dd-MM-yyyy')
+                                              .format(DateTime.now());
+                                      print(
+                                          "fecha del repeated: ${provider.dateController.text}");
                                       await provider.guardarNuevaBebida(true);
                                       await provider.getTodayDrinks();
                                       provider.borrarControllers();

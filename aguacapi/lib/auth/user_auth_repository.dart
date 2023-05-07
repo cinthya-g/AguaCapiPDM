@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:aguacapi/providers/crear_usuario_provider.dart';
 import 'package:aguacapi/providers/login_provider.dart';
+import 'package:intl/intl.dart';
 
 class UserAuthRepository {
   // Crear instancias de FirebaseAuth y GoogleSignIn
@@ -36,6 +37,13 @@ class UserAuthRepository {
 
   Future<void> createAccount() async {
     print("Entró a crear cuenta");
+    // verificar que password cumpla con el regex
+    final passRegex = RegExp(r'^(?=.*?[A-Z])(?=.*?[0-9]).{8,}$');
+    if (!passRegex.hasMatch(CrearUsuarioProvider().getPassword) ||
+        CrearUsuarioProvider().getUsername.length < 5 ||
+        CrearUsuarioProvider().getSelectedDate.isEmpty) {
+      return;
+    }
     final credential =
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
       // llamar singleton de CrearUsuarioProvider
@@ -50,12 +58,16 @@ class UserAuthRepository {
     String _profilePhoto =
         "https://firebasestorage.googleapis.com/v0/b/auth-example-a3044.appspot.com/o/photos-aguacapi%2FdefaultProfile.png?alt=media&token=2b8453b1-02b7-49d4-b189-1d2cb1cdd3f3";
 
+// fecha de hoy con formato aa--MM-yyyy
+    DateTime _fechaHoy = DateTime.now();
+    String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
+
     Map<String, dynamic> _userData = {
       "email": CrearUsuarioProvider().getEmail,
       "username": CrearUsuarioProvider().getUsername,
       "password": CrearUsuarioProvider().getPassword,
       "profilePhoto": _profilePhoto,
-      "createdAt": DateTime.now().toString().substring(0, 10),
+      "createdAt": _formattedDate,
       "sex": CrearUsuarioProvider().getSex,
       "region": CrearUsuarioProvider().getRegion,
       "physicalActivity": CrearUsuarioProvider().getActividadFisica,
