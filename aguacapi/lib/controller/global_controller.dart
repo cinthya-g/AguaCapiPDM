@@ -67,12 +67,15 @@ class GlobalController extends GetxController {
       _isloading.value = false;
     } catch (e) {
       // handle the exception here
-      // final weatherE = await FetchWeatherAPI()
-      //     .processData(24.097796401987143, -93.4890410734313);
 
-      //   weatherData.value = weatherE;
+      _latitude.value = 43.479631226511735;
+      _longitude.value = -110.76144515626352;
+      final weatherE = await FetchWeatherAPI()
+          .processData(43.479631226511735, -110.76144515626352);
 
-      //_isloading.value = false;
+      weatherData.value = weatherE;
+
+      _isloading.value = false;
       print('Error occurred: $e');
       //show error message to user
     }
