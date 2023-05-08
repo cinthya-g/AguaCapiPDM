@@ -32,7 +32,7 @@ class LandingPage extends StatelessWidget {
                 Consumer<LoginProvider>(builder: (context, providerLogin, _) {
                   return ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: acBlue50,
+                      backgroundColor: acBlue50,
                       fixedSize: const Size(200, 50),
                     ),
                     // insertar botón de iniciar sesión con texto e icono

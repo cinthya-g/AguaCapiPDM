@@ -1,7 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:aguacapi/content/configuracion.dart';
-import 'package:aguacapi/content/home_page.dart';
+import 'package:aguacapi/providers/ranking_provider.dart';
 import 'package:aguacapi/colors/colors.dart';
+import 'package:provider/provider.dart';
 
 class Ranking extends StatelessWidget {
   Ranking({super.key});
@@ -27,7 +28,7 @@ class Ranking extends StatelessWidget {
                       color: Colors.white),
                 ),
                 Text(
-                  "Top hidratación",
+                  "Top hidratación de hoy",
                   style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -37,151 +38,59 @@ class Ranking extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: TextField(
-            onChanged: (value) {},
-            decoration: InputDecoration(
-                labelText: "Buscar usuario...",
-                hintText: "Poncho Carpincho",
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(15.0)))),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGreen),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 1'),
-            subtitle: Text('Consumo: 2200ml'),
-            trailing: Text(
-              '1º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGreen50),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 2'),
-            subtitle: Text('Consumo: 2180ml'),
-            trailing: Text(
-              '2º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGreen100),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 3'),
-            subtitle: Text('Consumo: 2100ml'),
-            trailing: Text(
-              '3º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGrey),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 4'),
-            subtitle: Text('Consumo: 200ml'),
-            trailing: Text(
-              '4º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGrey),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 5'),
-            subtitle: Text('Consumo: 1700ml'),
-            trailing: Text(
-              '5º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGrey),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 6'),
-            subtitle: Text('Consumo: 1600ml'),
-            trailing: Text(
-              '6º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
-        Container(
-          margin: EdgeInsets.all(2),
-          decoration: BoxDecoration(
-              border: Border.all(color: Colors.black),
-              borderRadius: BorderRadius.circular(10),
-              color: acGrey),
-          child: ListTile(
-            leading: Icon(
-              Icons.person,
-              size: 50,
-            ),
-            title: Text('Usuario 7'),
-            subtitle: Text('Consumo: 200ml'),
-            trailing: Text(
-              '7º',
-              style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-            ),
-          ),
-        ),
+        SizedBox(height: 15),
+        Consumer<RankingProvider>(builder: (context, rankingProvider, child) {
+          return StreamBuilder<QuerySnapshot>(
+              stream: rankingProvider.query1,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting ||
+                    !snapshot.hasData) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                return ListView.builder(
+                    shrinkWrap: true,
+                    physics: BouncingScrollPhysics(),
+                    itemCount: snapshot.data!.docs.length,
+                    itemBuilder: (context, index) {
+                      DocumentSnapshot data = snapshot.data!.docs[index];
+                      return Padding(
+                        padding: const EdgeInsets.only(
+                            right: 12.0, left: 12.0, bottom: 4, top: 4),
+                        child: Card(
+                          elevation: 4,
+                          shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0)),
+                          child: ListTile(
+                            tileColor: index == 0
+                                ? acGreen
+                                : index == 1
+                                    ? acGreen50
+                                    : index == 2
+                                        ? acGreen100
+                                        : acGrey,
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(15.0)),
+                            leading: CircleAvatar(
+                              radius: 32,
+                              backgroundImage: NetworkImage(
+                                  data['profilePhoto'],
+                                  scale: 1.0),
+                            ),
+                            title: Text(data['username'],
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400, fontSize: 22)),
+                            subtitle: Text(
+                                "Consumo: ${data['goalProgress'].toString()} ml",
+                                style: TextStyle(fontSize: 18)),
+                            trailing: Text("${index + 1}°",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 26)),
+                          ),
+                        ),
+                      );
+                    });
+              });
+        }),
       ],
     );
   }

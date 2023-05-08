@@ -1,17 +1,15 @@
 import 'package:aguacapi/controller/global_controller.dart';
 import 'package:aguacapi/widgets/currentWeatherWidget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:aguacapi/content/nuevo_consumo.dart';
-import 'package:flutterfire_ui/database.dart';
-import 'package:flutterfire_ui/firestore.dart';
-
-import 'package:aguacapi/content/home_page.dart';
 
 import 'package:provider/provider.dart';
 import 'package:aguacapi/providers/perfil_provider.dart';
+import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 
 import '../widgets/weatherWidget.dart';
 
@@ -47,27 +45,22 @@ class Perfil extends StatelessWidget {
                     ),
                     Consumer<PerfilProvider>(
                       builder: (context, perfilProvider, child) {
-                        return FutureBuilder(
-                          future: perfilProvider.getMyContent(),
+                        return StreamBuilder<DocumentSnapshot>(
+                          stream: FirebaseFirestore.instance
+                              .collection('usuarios-aguacapi')
+                              .doc(FirebaseAuth.instance.currentUser!.uid)
+                              .snapshots(),
                           builder: (context, snapshot) {
-                            if (snapshot.connectionState ==
-                                ConnectionState.done) {
-                              return Text(
-                                "${snapshot.data!.get("username")}",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              );
-                            } else {
-                              return Text(
-                                "Cargando...",
-                                style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.white),
-                              );
+                            if (!snapshot.hasData) {
+                              return CircularProgressIndicator();
                             }
+                            return Text(
+                              "${snapshot.data!.get("username")}",
+                              style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            );
                           },
                         );
                       },
@@ -88,11 +81,16 @@ class Perfil extends StatelessWidget {
                           children: [
                             Consumer<PerfilProvider>(
                               builder: (context, perfilProvider, child) {
-                                return FutureBuilder(
-                                  future: perfilProvider.getMyContent(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.done) {
+                                return StreamBuilder<DocumentSnapshot>(
+                                    stream: FirebaseFirestore.instance
+                                        .collection('usuarios-aguacapi')
+                                        .doc(FirebaseAuth
+                                            .instance.currentUser!.uid)
+                                        .snapshots(),
+                                    builder: (context, snapshot) {
+                                      if (!snapshot.hasData) {
+                                        return CircularProgressIndicator();
+                                      }
                                       return CircleAvatar(
                                         backgroundColor: Colors.black,
                                         radius: 70,
@@ -104,23 +102,7 @@ class Perfil extends StatelessWidget {
                                               .image,
                                         ),
                                       );
-                                    } else {
-                                      return CircleAvatar(
-                                        backgroundColor: Colors.black,
-                                        radius: 70,
-                                        child: CircleAvatar(
-                                          backgroundColor: Color(0xffE6E6E6),
-                                          radius: 68,
-                                          child: Icon(
-                                            Icons.person,
-                                            size: 50,
-                                            color: Colors.black,
-                                          ),
-                                        ),
-                                      );
-                                    }
-                                  },
-                                );
+                                    });
                               },
                             ),
                           ],
@@ -226,14 +208,15 @@ class Perfil extends StatelessWidget {
                                                         provider
                                                             .borrarDialogMeta();
                                                         ScaffoldMessenger.of(
-                                                                context)
-                                                            .showSnackBar(
-                                                                SnackBar(
-                                                          content: Text(
-                                                              'Meta calculada y actualizada'),
-                                                          duration: Duration(
-                                                              seconds: 3),
-                                                        ));
+                                                            context)
+                                                          ..hideCurrentSnackBar
+                                                          ..showSnackBar(
+                                                              SnackBar(
+                                                            content: Text(
+                                                                'Meta calculada y actualizada'),
+                                                            backgroundColor:
+                                                                acSuccess,
+                                                          ));
                                                         Navigator.of(context)
                                                             .pop();
                                                       },
@@ -264,14 +247,14 @@ class Perfil extends StatelessWidget {
                                                       provider
                                                           .borrarDialogMeta();
                                                       ScaffoldMessenger.of(
-                                                              context)
-                                                          .showSnackBar(
-                                                              SnackBar(
-                                                        content: Text(
-                                                            'Meta actualizada'),
-                                                        duration: Duration(
-                                                            seconds: 2),
-                                                      ));
+                                                          context)
+                                                        ..hideCurrentSnackBar
+                                                        ..showSnackBar(SnackBar(
+                                                          content: Text(
+                                                              'Meta actualizada'),
+                                                          backgroundColor:
+                                                              acSuccess,
+                                                        ));
 
                                                       Navigator.of(context)
                                                           .pop();
@@ -394,16 +377,10 @@ class Perfil extends StatelessWidget {
                                       color: acBrown, fontSize: 25.0)),
                               content: SingleChildScrollView(
                                 child: ListBody(children: [
-                                  Text(
-                                    'No más de 150 caracteres',
-                                    style: TextStyle(
-                                        fontSize: 16.0,
-                                        color: acGrey50,
-                                        fontWeight: FontWeight.w400),
-                                  ),
                                   Consumer<PerfilProvider>(
                                       builder: (context, provider, _) {
                                     return TextFormField(
+                                        maxLength: 150,
                                         controller:
                                             provider.newStatusController,
                                         keyboardType: TextInputType.text,
@@ -426,8 +403,9 @@ class Perfil extends StatelessWidget {
                                         provider.borrarDialogEstado();
                                         ScaffoldMessenger.of(context)
                                             .showSnackBar(SnackBar(
-                                                content: Text(
-                                                    'Estado actualizado')));
+                                          content: Text('Estado actualizado'),
+                                          backgroundColor: acSuccess,
+                                        ));
                                         Navigator.of(context).pop();
                                       },
                                       style: ElevatedButton.styleFrom(
@@ -503,54 +481,39 @@ class Perfil extends StatelessWidget {
                                   borderRadius: BorderRadius.circular(10)),
                               child: Row(
                                 children: [
-                                  Consumer<PerfilProvider>(
-                                    builder: (context, perfilProvider, child) {
-                                      return FutureBuilder(
-                                        future: perfilProvider.getMyContent(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            return Container(
-                                              // Modificar este parámetros de acuerdo al 100% de la meta
-                                              width: ((snapshot.data!.get(
-                                                                      "goalProgress") /
-                                                                  snapshot.data!
-                                                                      .get(
-                                                                          "goal")) *
-                                                              100)
-                                                          .roundToDouble() >=
-                                                      100
-                                                  ? 100
-                                                  : ((snapshot.data!.get(
-                                                              "goalProgress") /
-                                                          snapshot.data!
-                                                              .get("goal")) *
-                                                      100),
-                                              height: 12,
-                                              decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 66, 139, 202),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                            );
-                                          } else {
-                                            return Container(
-                                              // Modificar este parámetros de acuerdo al 100% de la meta
-                                              width: 0,
-                                              height: 12,
-                                              decoration: BoxDecoration(
-                                                  color: Color.fromARGB(
-                                                      255, 66, 139, 202),
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10)),
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
+                                  Consumer<PerfilProvider>(builder:
+                                      (context, perfilProvider, child) {
+                                    return StreamBuilder<DocumentSnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('usuarios-aguacapi')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        int _goal = snapshot.data!.get('goal');
+                                        int _current =
+                                            snapshot.data!.get('goalProgress');
+                                        double _percent =
+                                            ((_current / _goal) * 100)
+                                                .ceilToDouble();
+                                        return Container(
+                                          // Modificar este parámetros de acuerdo al 100% de la meta
+                                          width: _percent > 100.0
+                                              ? 100.0
+                                              : _percent,
+                                          height: 12,
+                                          decoration: BoxDecoration(
+                                              color: Color.fromARGB(
+                                                  255, 66, 139, 202),
+                                              borderRadius:
+                                                  BorderRadius.circular(10)),
+                                        );
+                                      },
+                                    );
+                                  }),
                                 ],
                               ),
                             ),
@@ -569,70 +532,94 @@ class Perfil extends StatelessWidget {
                                         fontWeight: FontWeight.w400,
                                         fontSize: 24),
                                   ),
-                                  Consumer<PerfilProvider>(
-                                    builder: (context, perfilProvider, child) {
-                                      return FutureBuilder(
-                                        future: perfilProvider.getMyContent(),
-                                        builder: (context, snapshot) {
-                                          if (snapshot.connectionState ==
-                                              ConnectionState.done) {
-                                            return Text(
-                                              '${snapshot.data!.get("goalProgress")} ml',
+                                  Consumer<PerfilProvider>(builder:
+                                      (context, perfilProvider, child) {
+                                    return StreamBuilder<DocumentSnapshot>(
+                                      stream: FirebaseFirestore.instance
+                                          .collection('usuarios-aguacapi')
+                                          .doc(FirebaseAuth
+                                              .instance.currentUser!.uid)
+                                          .snapshots(),
+                                      builder: (context, snapshot) {
+                                        if (!snapshot.hasData) {
+                                          return CircularProgressIndicator();
+                                        }
+                                        String _text = snapshot.data!
+                                            .get('goalProgress')
+                                            .toString();
+                                        bool _permission = snapshot.data!
+                                            .get('rankingPermission');
+
+                                        return Column(
+                                          children: [
+                                            Text(
+                                              "${_text} ml",
                                               style: TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 31, 70, 109),
                                                   fontWeight: FontWeight.bold,
-                                                  fontSize: 32),
-                                            );
-                                          } else {
-                                            return Text(
-                                              "...",
-                                              style: TextStyle(
-                                                  fontSize: 13,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Colors.white),
-                                            );
-                                          }
-                                        },
-                                      );
-                                    },
-                                  ),
-                                  Container(
-                                    margin: EdgeInsets.only(top: 20),
-                                    child: Consumer<PerfilProvider>(
-                                      builder:
-                                          (context, perfilProvider, child) {
-                                        return ElevatedButton(
-                                          onPressed: () async {
-                                            await perfilProvider
-                                                .getTodayDrinks();
-                                          },
-                                          child: Row(
-                                            children: [
-                                              Icon(Icons.replay_outlined),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                'Actualizar',
-                                                style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight:
-                                                        FontWeight.w400),
-                                              ),
-                                            ],
-                                          ),
-                                          style: ElevatedButton.styleFrom(
-                                            primary: Color.fromRGBO(
-                                                171, 198, 253, 1),
-                                            onPrimary: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(32.0),
+                                                  fontSize: 32,
+                                                  color: acBlue),
                                             ),
-                                          ),
+                                            SizedBox(height: 15),
+                                            Container(
+                                                height: 40,
+                                                width: 155,
+                                                decoration: BoxDecoration(
+                                                    color: Color.fromRGBO(
+                                                        171, 198, 253, 1),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10)),
+                                                child: _permission
+                                                    ? Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            "Ranking ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 20,
+                                                                color: acBlue),
+                                                          ),
+                                                          SizedBox(width: 3),
+                                                          Icon(
+                                                            Icons
+                                                                .check_circle_rounded,
+                                                            color: acGreen150,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      )
+                                                    : Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .center,
+                                                        children: [
+                                                          Text(
+                                                            "Ranking ",
+                                                            style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .w400,
+                                                                fontSize: 20,
+                                                                color: acBlue),
+                                                          ),
+                                                          SizedBox(width: 3),
+                                                          Icon(
+                                                            Icons.cancel,
+                                                            color: acOrange150,
+                                                            size: 30,
+                                                          )
+                                                        ],
+                                                      )),
+                                          ],
                                         );
                                       },
-                                    ),
-                                  ),
+                                    );
+                                  }),
                                 ],
                               ),
                             ),

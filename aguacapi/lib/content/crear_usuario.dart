@@ -1,4 +1,3 @@
-import 'package:aguacapi/content/home_page.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/colors/colors.dart';
 import 'package:aguacapi/providers/crear_usuario_provider.dart';
@@ -9,6 +8,13 @@ import 'package:aguacapi/auth/bloc/auth_bloc.dart';
 
 class CrearUsuario extends StatelessWidget {
   CrearUsuario({super.key});
+
+  String? _email;
+  bool _validEmail = false;
+  String? _username;
+  bool _validUsername = false;
+  String? _password;
+  bool _validPassword = false;
 
   @override
   Widget build(BuildContext context) {
@@ -32,45 +38,93 @@ class CrearUsuario extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 32.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: provider.emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    // Email validation logic here
-                  },
-                ),
+                StatefulBuilder(builder: (context, setState) {
+                  return TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: _validEmail ? acSuccess : acError),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _validEmail ? acSuccess : acError,
+                        ),
+                      ),
+                    ),
+                    controller: provider.emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    onChanged: (value) {
+                      setState(() {
+                        _email = value;
+                        _validEmail = provider
+                            .isValidEmail(provider.emailController.text);
+                      });
+                    },
+                  );
+                }),
                 SizedBox(height: 16.0),
-                TextFormField(
-                  decoration: InputDecoration(
-                    labelText: 'Nombre de usuario',
-                    border: OutlineInputBorder(),
-                  ),
-                  controller: provider.usernameController,
-                  validator: (value) {
-                    // Username validation logic here
-                  },
-                ),
+                StatefulBuilder(builder: (context, setState) {
+                  return TextFormField(
+                    decoration: InputDecoration(
+                      labelText: 'Nombre de usuario',
+                      hintText: 'Al menos 5 caracteres',
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: _validUsername ? acSuccess : acError),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _validUsername ? acSuccess : acError,
+                        ),
+                      ),
+                    ),
+                    controller: provider.usernameController,
+                    maxLength: 15,
+                    onChanged: (value) {
+                      setState(() {
+                        _username = value;
+                        _validUsername = provider
+                            .isValidUsername(provider.usernameController.text);
+                      });
+                    },
+                  );
+                }),
                 SizedBox(height: 16.0),
-                TextFormField(
-                  controller: provider.passwordController,
-                  decoration: InputDecoration(
-                    labelText: 'Contraseña',
-                    suffixIcon: IconButton(
-                        icon: provider.passwordVisible
-                            ? Icon(Icons.visibility)
-                            : Icon(Icons.visibility_off),
-                        onPressed: () => provider.togglePasswordVisibility()),
-                    border: OutlineInputBorder(),
-                  ),
-                  obscureText: provider.passwordVisible,
-                  validator: (value) {
-                    // Password validation logic here
-                  },
-                ),
+                StatefulBuilder(builder: (context, setState) {
+                  return TextFormField(
+                    controller: provider.passwordController,
+                    decoration: InputDecoration(
+                      labelText: 'Contraseña',
+                      hintText: 'Al menos 8 caracteres, 1 número y 1 mayúscula',
+                      suffixIcon: IconButton(
+                          icon: provider.passwordVisible
+                              ? Icon(Icons.visibility)
+                              : Icon(Icons.visibility_off),
+                          onPressed: () => provider.togglePasswordVisibility()),
+                      border: OutlineInputBorder(),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                            color: _validPassword ? acSuccess : acError),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(
+                          color: _validPassword ? acSuccess : acError,
+                        ),
+                      ),
+                    ),
+                    obscureText: provider.passwordVisible,
+                    onChanged: (value) {
+                      setState(() {
+                        _password = value;
+                        _validPassword = provider
+                            .isValidPassword(provider.passwordController.text);
+                      });
+                    },
+                  );
+                }),
                 SizedBox(height: 16.0),
                 Container(
                   child: Divider(
@@ -115,6 +169,7 @@ class CrearUsuario extends StatelessWidget {
                 ),
                 SizedBox(height: 10.0),
                 TextField(
+                    readOnly: true,
                     controller: provider.selectedDate,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(),
@@ -124,11 +179,11 @@ class CrearUsuario extends StatelessWidget {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
-                          lastDate: DateTime(2100));
+                          firstDate: DateTime(1940),
+                          lastDate: DateTime.now());
                       if (pickedDate != null) {
                         String formattedDate =
-                            DateFormat('yyyy-MM-dd').format(pickedDate);
+                            DateFormat('dd-MM-yyyy').format(pickedDate);
                         provider.selectedDate.text = formattedDate;
                       } else {
                         print('Date is not selected');

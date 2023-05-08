@@ -62,7 +62,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       emit(AuthSuccessState());
       print("STATE: AuthSuccessState");
     } catch (e) {
-      emit(AuthErrorRegisterState(eMsg: "Verifique datos de registro"));
+      emit(AuthErrorRegisterState(
+          eMsg:
+              "Verifique que todos los campos estén completos o que cumplan con los requisitos"));
       print("STATE: AuthErrorRegisterState");
     }
   }

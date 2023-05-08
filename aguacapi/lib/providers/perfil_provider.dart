@@ -3,6 +3,7 @@ import 'dart:ffi';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class PerfilProvider with ChangeNotifier {
   static final PerfilProvider _perfilProvider = PerfilProvider._internal();
@@ -127,23 +128,22 @@ class PerfilProvider with ChangeNotifier {
   }
 
   // Sumar todos los mililitros de las bebidas de HOY del usuario autenticado
-  Future<num> getTodayDrinks() async {
+  Future<void> getTodayDrinks() async {
     // Obtener documento cuyo nombre es el ID del usuario autenticado
     var userDoc = await FirebaseFirestore.instance
         .collection("usuarios-aguacapi")
         .doc("${FirebaseAuth.instance.currentUser!.uid}");
 
-    // Query para sacar la data del documento
-    var userContent = await userDoc.get();
-    final _userContentData = userContent.data()!;
-
     // Iterar los documentos de las bebidas donde el idUser sea el del usuario
     // y sumar las quantity
+    DateTime _fechaHoy = DateTime.now();
+    String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
+    print("formattedDate: $_formattedDate");
     num _todayDrinks = 0;
     await FirebaseFirestore.instance
         .collection("bebidas-aguacapi")
         .where("idUser", isEqualTo: "${FirebaseAuth.instance.currentUser!.uid}")
-        .where("date", isEqualTo: DateTime.now().toString().substring(0, 10))
+        .where("date", isEqualTo: _formattedDate)
         .get()
         .then((value) {
       value.docs.forEach((element) {
@@ -152,9 +152,8 @@ class PerfilProvider with ChangeNotifier {
     });
     print(">> Bebidas de hoy: $_todayDrinks");
 
-    // Actualizar el campo goalProgress del usuario con _todayDrinks
+    // Atualizar el campo goalProgress del usuario con _todayDrinks
     await userDoc.update({"goalProgress": _todayDrinks});
     notifyListeners();
-    return _todayDrinks;
   }
 }

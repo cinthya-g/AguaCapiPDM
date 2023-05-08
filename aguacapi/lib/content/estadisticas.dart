@@ -41,30 +41,53 @@ class Estadisticas extends StatelessWidget {
         SizedBox(height: 10),
         Padding(
           padding: const EdgeInsets.only(right: 13.0, left: 13.0),
-          child: TextField(
-              controller: null,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(),
-                  hintText: 'Selecciona una fecha',
-                  suffixIcon: Icon(Icons.calendar_today)),
-              onTap: () async {
-                DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(),
-                    firstDate: DateTime(1900),
-                    lastDate: DateTime.now());
-                if (pickedDate != null) {
-                  print(pickedDate);
-                  String formattedDate =
-                      DateFormat('yyyy-MM-dd').format(pickedDate);
-                  var formattedDateProvider = formattedDate;
-                  print(formattedDate);
-                  initialDate:
-                  formattedDate;
-                } else {
-                  print('Date is not selected');
-                }
-              }),
+          child: Row(
+            children: [
+              Expanded(
+                child: SizedBox(
+                  width: 200,
+                  child: TextField(
+                      readOnly: true,
+                      controller: null,
+                      decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Selecciona una fecha',
+                          suffixIcon: Icon(Icons.calendar_today)),
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                            context: context,
+                            initialDate: DateTime.now(),
+                            firstDate: DateTime(1900),
+                            lastDate: DateTime.now());
+                        if (pickedDate != null) {
+                          print(pickedDate);
+                          String formattedDate =
+                              DateFormat('dd-MM-yyyy').format(pickedDate);
+                          var formattedDateProvider = formattedDate;
+                          print(formattedDate);
+                          initialDate:
+                          formattedDate;
+                        } else {
+                          print('Date is not selected');
+                        }
+                      }),
+                ),
+              ),
+              SizedBox(width: 10),
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  foregroundColor: Colors.white,
+                  backgroundColor: acOrange50,
+                  fixedSize: const Size(130, 65),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20.0),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text("FILTRAR"),
+              ),
+            ],
+          ),
         ),
         SizedBox(height: 10),
         Padding(

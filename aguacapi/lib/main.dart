@@ -17,6 +17,8 @@ import 'package:aguacapi/providers/login_provider.dart';
 import 'package:aguacapi/providers/perfil_provider.dart';
 import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 import 'package:aguacapi/providers/choose_picture_provider.dart';
+import 'package:aguacapi/providers/configuracion_provider.dart';
+import 'package:aguacapi/providers/ranking_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -34,7 +36,10 @@ void main() async {
             create: (context) => PerfilProvider()..getTodayDrinks()),
         ChangeNotifierProvider(
             create: (context) => NuevoConsumoProvider()..borrarControllers()),
-        ChangeNotifierProvider(create: (context) => ChoosePictureProvider())
+        ChangeNotifierProvider(create: (context) => ChoosePictureProvider()),
+        ChangeNotifierProvider(
+            create: (context) => ConfiguracionProvider()..borrarValores()),
+        ChangeNotifierProvider(create: (create) => RankingProvider()),
       ],
       child: MyApp(),
     ),
@@ -52,9 +57,34 @@ class MyApp extends StatelessWidget {
         home: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state is AuthErrorState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                 content: Text(state.eMsg),
                 backgroundColor: acError,
+              ));
+            } else if (state is AuthErrorLoginState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.eMsg),
+                backgroundColor: acError,
+              ));
+            } else if (state is AuthErrorRegisterState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.eMsg),
+                backgroundColor: acError,
+              ));
+            } else if (state is AuthSuccessState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.sMsg),
+                backgroundColor: acSuccess,
+              ));
+            } else if (state is SignOutSuccessState) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                content: Text(state.sMsg),
+                backgroundColor: acSuccess,
               ));
             }
           },
