@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:aguacapi/providers/ranking_provider.dart';
 import 'package:aguacapi/colors/colors.dart';
@@ -70,11 +71,20 @@ class Ranking extends StatelessWidget {
                                         : acGrey,
                             shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(15.0)),
-                            leading: CircleAvatar(
-                              radius: 32,
-                              backgroundImage: NetworkImage(
-                                  data['profilePhoto'],
-                                  scale: 1.0),
+                            leading: Container(
+                              decoration: BoxDecoration(
+                                shape: BoxShape.circle,
+                                border: Border.all(
+                                  color: acBlue50, // color del borde
+                                  width: 2, // ancho del borde
+                                ),
+                              ),
+                              child: CircleAvatar(
+                                radius: 32,
+                                backgroundImage: NetworkImage(
+                                    data['profilePhoto'],
+                                    scale: 1.0),
+                              ),
                             ),
                             title: Text(data['username'],
                                 style: TextStyle(

@@ -6,6 +6,7 @@ import 'package:aguacapi/model/weather_data_current.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import '../colors/colors.dart';
 
@@ -71,23 +72,42 @@ class _CurrentWeatherWidgetState extends State<CurrentWeatherWidget> {
         margin: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(
             color: acBlue100, borderRadius: BorderRadius.circular(10)),
-        child: ListTile(
-          leading: SizedBox(
-            width: 30,
-            height: 30,
-            child: Image.asset(
-                "assets/images/${widget.currentWeather.current!.weather![0].icon}.png"),
-          ),
-          title: Text(getMessage(widget.currentWeather.current!.temp),
-              style: TextStyle(
-                  fontSize: 18, fontWeight: FontWeight.w400, color: acBrown)),
-          subtitle: Text('$locality, $city'),
-          trailing: Text(
-            '${widget.currentWeather.current!.temp}°C',
-            style: TextStyle(
-                fontSize: 32, fontWeight: FontWeight.w400, color: acBrown),
-          ),
-        ),
+        child: locality == 'Jackson'
+            ? ListTile(
+                title: Text(
+                  'Para mostrar tu clima actual, necesitamos tu ubicación (habilita los permisos).',
+                  style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w400,
+                      color: acBrown),
+                ),
+                trailing: IconButton(
+                  icon: Icon(Icons.settings),
+                  onPressed: openAppSettings,
+                  color: acBrown,
+                ),
+              )
+            : ListTile(
+                leading: SizedBox(
+                  width: 30,
+                  height: 30,
+                  child: Image.asset(
+                      "assets/images/${widget.currentWeather.current!.weather![0].icon}.png"),
+                ),
+                title: Text(getMessage(widget.currentWeather.current!.temp),
+                    style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w400,
+                        color: acBrown)),
+                subtitle: Text('$locality, $city'),
+                trailing: Text(
+                  '${widget.currentWeather.current!.temp}°C',
+                  style: TextStyle(
+                      fontSize: 32,
+                      fontWeight: FontWeight.w400,
+                      color: acBrown),
+                ),
+              ),
       ),
     );
   }

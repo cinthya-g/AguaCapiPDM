@@ -36,7 +36,7 @@ class ChoosePictureProvider with ChangeNotifier {
       source: ImageSource.camera,
       maxHeight: 320,
       maxWidth: 320,
-      imageQuality: 85,
+      imageQuality: 70,
     );
     if (_pickedFile != null) {
       _selectedPicture = File(_pickedFile.path);
@@ -62,7 +62,7 @@ class ChoosePictureProvider with ChangeNotifier {
     // Abrir la galería y seleccionar la imagen
     final _pPickedFile = await ImagePicker().pickImage(
       source: ImageSource.gallery,
-      imageQuality: 90,
+      imageQuality: 80,
       maxHeight: 720,
       maxWidth: 720,
     );
