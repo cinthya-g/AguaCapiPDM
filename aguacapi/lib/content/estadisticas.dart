@@ -89,16 +89,19 @@ class Estadisticas extends StatelessWidget {
                   ),
                   onPressed: () async {
                     // Construir gráfica
+
                     if (await eProvider.saveGraphValues()) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Gráfica construida'),
+                          content: Text('Estadísticas obtenidas exitosamente'),
+                          backgroundColor: acSuccess,
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('No se pudo construir la gráfica'),
+                          backgroundColor: acError,
                         ),
                       );
                     }
@@ -151,7 +154,25 @@ class Estadisticas extends StatelessWidget {
             // Gráfica de barras
             child: Padding(
               padding: const EdgeInsets.only(top: 25.0),
-              child: MyBarChart(),
+              child: StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("estadisticas-aguacapi")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    // obtener ambos arreglos
+                    List<dynamic> _milliliters =
+                        snapshot.data!.get('sevenQuantities');
+                    List<dynamic> _dates = snapshot.data!.get('sevenDays');
+                    num _yLimit = snapshot.data!.get('yLimit');
+                    return MyBarChart(
+                        milliliters: _milliliters,
+                        dates: _dates,
+                        yLimit: _yLimit);
+                  }),
             ),
           ),
         ),

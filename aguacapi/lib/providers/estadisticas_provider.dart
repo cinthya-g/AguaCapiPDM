@@ -62,8 +62,10 @@ class EstadisticasProvider with ChangeNotifier {
     // y sus nombres
     List<num> _weekWater = await _obtainWeekWater(_week);
     List<String> _sevenDaysDrinks = await _obtainDrinksNames(_week);
-    // Obtener la cantidad mayor de dicha lista
+    // Obtener la suma de dicha lista
     num _biggestQuantity = obtainBiggestQuantity(_weekWater);
+    // Obtener el límite de y
+    num _yLimit = _obtainYLimit(_weekWater);
     // Obtener el string que más se repite en _sevenDaysDrinks
     String _mostRepeatedDrink = _obtainMostRepeatedDrink(_sevenDaysDrinks);
     String _drinkPhoto = await _obtainDrinkPhoto(_mostRepeatedDrink);
@@ -82,6 +84,7 @@ class EstadisticasProvider with ChangeNotifier {
       "sevenDaysDrinks": _sevenDaysDrinks,
       "biggestDrink": _mostRepeatedDrink,
       "drinkPhoto": _drinkPhoto,
+      "yLimit": _yLimit,
     });
     return true;
   }
@@ -282,6 +285,14 @@ class EstadisticasProvider with ChangeNotifier {
     return _drinkPhoto;
   }
 
-  // Leer los valores de estadisticas-aguacapi segun el usuario
-
+  // Obtener la cantidad más grande de la semana para limitar el eje Y
+  num _obtainYLimit(List<num> weekWater) {
+    num _yLimit = 0;
+    for (int i = 0; i < 7; i++) {
+      if (weekWater[i] > _yLimit) {
+        _yLimit = weekWater[i];
+      }
+    }
+    return _yLimit;
+  }
 }

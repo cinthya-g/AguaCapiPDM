@@ -106,6 +106,7 @@ class UserAuthRepository {
       "sevenQuantities": _sevenQuantitiesList,
       "sevenDaysDrinks": _sevenDaysDrinks,
       "drinkPhoto": "",
+      "yLimit": 0,
     };
 
     // Crear documento en firestore
