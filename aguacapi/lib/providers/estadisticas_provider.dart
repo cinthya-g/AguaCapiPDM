@@ -15,6 +15,10 @@ class EstadisticasProvider with ChangeNotifier {
   var selectedDate = TextEditingController();
   var _today = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
+  String noName = "Sin registros";
+  String nodrinkPhoto =
+      "https://firebasestorage.googleapis.com/v0/b/auth-example-a3044.appspot.com/o/drinks-photos-aguacapi%2Fnodrink.png?alt=media&token=f4d02a80-b4e1-4525-8216-e93e8aae47ec";
+
   // Cambiar el valor de la fecha seleccionada
   void updateSelectedDate(String newDate) {
     selectedDate.text = newDate;
@@ -203,7 +207,7 @@ class EstadisticasProvider with ChangeNotifier {
     String _name;
     for (int i = 0; i < 7; i++) {
       // Sumar cantidades que coincidan con "date" de bebidas-aguacapi
-      print(">> Fecha: ${week[i]}");
+      //print(">> Fecha: ${week[i]}");
       _name = "";
       await FirebaseFirestore.instance
           .collection("bebidas-aguacapi")

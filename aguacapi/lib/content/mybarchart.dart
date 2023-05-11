@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:aguacapi/colors/colors.dart';
@@ -23,7 +25,7 @@ class _MyBarChartState extends State<MyBarChart> {
         barGroups: barGroups,
         gridData: FlGridData(show: false),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 4500,
+        maxY: 2200,
         // AQUÍ SE MODIFICA EL MÁXIMO DE MILILITROS
         // SE PUEDE OBTENER CON UN CÁLCULO DEPENDIENDO DEL CONSUMO MÁXIMO DE CADA USUARIO
       ),
@@ -132,7 +134,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 0,
           barRods: [
             BarChartRodData(
-              toY: 1000,
+              toY: 740,
               gradient: _barsGradient,
             )
           ],
@@ -142,7 +144,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 1,
           barRods: [
             BarChartRodData(
-              toY: 3600,
+              toY: 700,
               gradient: _barsGradient,
             )
           ],
@@ -162,7 +164,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 3,
           barRods: [
             BarChartRodData(
-              toY: 4200,
+              toY: 600,
               gradient: _barsGradient,
             )
           ],
@@ -172,7 +174,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 4,
           barRods: [
             BarChartRodData(
-              toY: 4500,
+              toY: 0,
               gradient: _barsGradient,
             )
           ],
@@ -182,7 +184,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 5,
           barRods: [
             BarChartRodData(
-              toY: 1210,
+              toY: 150,
               gradient: _barsGradient,
             )
           ],
@@ -192,7 +194,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 6,
           barRods: [
             BarChartRodData(
-              toY: 990,
+              toY: 250,
               gradient: _barsGradient,
             )
           ],

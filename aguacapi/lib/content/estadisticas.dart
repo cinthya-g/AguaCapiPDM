@@ -181,6 +181,15 @@ class Estadisticas extends StatelessWidget {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
+                String _photo = "${snapshot.data!.get("drinkPhoto")}".isEmpty ||
+                        "${snapshot.data!.get("drinkPhoto")}" == ""
+                    ? eProvider.nodrinkPhoto
+                    : "${snapshot.data!.get("drinkPhoto")}";
+                String _drinkName =
+                    "${snapshot.data!.get("biggestDrink")}".isEmpty ||
+                            "${snapshot.data!.get("biggestDrink")}" == ""
+                        ? eProvider.noName
+                        : "${snapshot.data!.get("biggestDrink")}";
                 return Padding(
                   padding: const EdgeInsets.only(left: 13.0, right: 13.0),
                   child: Container(
@@ -201,12 +210,10 @@ class Estadisticas extends StatelessWidget {
                           margin: EdgeInsets.only(top: 10),
                           child: CircleAvatar(
                             radius: 80,
-                            backgroundImage: Image.network(
-                                    "${snapshot.data!.get("drinkPhoto")}")
-                                .image,
+                            backgroundImage: Image.network(_photo).image,
                           ),
                         ),
-                        Text("${snapshot.data!.get("biggestDrink")}",
+                        Text(_drinkName,
                             style: TextStyle(
                                 fontSize: 36,
                                 fontWeight: FontWeight.w500,
