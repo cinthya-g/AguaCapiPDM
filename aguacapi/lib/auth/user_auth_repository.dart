@@ -95,8 +95,14 @@ class UserAuthRepository {
     String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
 
     List<String> _sevenDaysList = [];
-    List<int> _sevenQuantitiesList = [];
+    List<int> _sevenQuantitiesList = [0, 0, 0, 0, 0, 0, 0];
     List<String> _sevenDaysDrinks = [];
+
+    for (int i = 0; i < 7; i++) {
+      DateTime _fecha = DateTime.now().add(Duration(days: i));
+      String _formattedDate = DateFormat('dd-MM-yyyy').format(_fecha);
+      _sevenDaysList.add(_formattedDate);
+    }
 
     Map<String, dynamic> _statisticsData = {
       "createdAt": _formattedDate,
@@ -106,6 +112,7 @@ class UserAuthRepository {
       "sevenQuantities": _sevenQuantitiesList,
       "sevenDaysDrinks": _sevenDaysDrinks,
       "drinkPhoto": "",
+      "yLimit": 0,
     };
 
     // Crear documento en firestore

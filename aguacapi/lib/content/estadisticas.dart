@@ -89,16 +89,19 @@ class Estadisticas extends StatelessWidget {
                   ),
                   onPressed: () async {
                     // Construir gráfica
-                    if (await eProvider.saveGraphValues()) {
+
+                    if (await eProvider.saveGraphValues(false)) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
-                          content: Text('Gráfica construida'),
+                          content: Text('Estadísticas obtenidas exitosamente'),
+                          backgroundColor: acSuccess,
                         ),
                       );
                     } else {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('No se pudo construir la gráfica'),
+                          backgroundColor: acError,
                         ),
                       );
                     }
@@ -151,7 +154,25 @@ class Estadisticas extends StatelessWidget {
             // Gráfica de barras
             child: Padding(
               padding: const EdgeInsets.only(top: 25.0),
-              child: MyBarChart(),
+              child: StreamBuilder<DocumentSnapshot>(
+                  stream: FirebaseFirestore.instance
+                      .collection("estadisticas-aguacapi")
+                      .doc(FirebaseAuth.instance.currentUser!.uid)
+                      .snapshots(),
+                  builder: (context, snapshot) {
+                    if (!snapshot.hasData) {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                    // obtener ambos arreglos
+                    List<dynamic> _milliliters =
+                        snapshot.data!.get('sevenQuantities');
+                    List<dynamic> _dates = snapshot.data!.get('sevenDays');
+                    num _yLimit = snapshot.data!.get('yLimit');
+                    return MyBarChart(
+                        milliliters: _milliliters,
+                        dates: _dates,
+                        yLimit: _yLimit);
+                  }),
             ),
           ),
         ),
@@ -181,6 +202,15 @@ class Estadisticas extends StatelessWidget {
                 if (!snapshot.hasData) {
                   return Center(child: CircularProgressIndicator());
                 }
+                String _photo = "${snapshot.data!.get("drinkPhoto")}".isEmpty ||
+                        "${snapshot.data!.get("drinkPhoto")}" == ""
+                    ? eProvider.nodrinkPhoto
+                    : "${snapshot.data!.get("drinkPhoto")}";
+                String _drinkName =
+                    "${snapshot.data!.get("biggestDrink")}".isEmpty ||
+                            "${snapshot.data!.get("biggestDrink")}" == ""
+                        ? eProvider.noName
+                        : "${snapshot.data!.get("biggestDrink")}";
                 return Padding(
                   padding: const EdgeInsets.only(left: 13.0, right: 13.0),
                   child: Container(
@@ -201,12 +231,10 @@ class Estadisticas extends StatelessWidget {
                           margin: EdgeInsets.only(top: 10),
                           child: CircleAvatar(
                             radius: 80,
-                            backgroundImage: Image.network(
-                                    "${snapshot.data!.get("drinkPhoto")}")
-                                .image,
+                            backgroundImage: Image.network(_photo).image,
                           ),
                         ),
-                        Text("${snapshot.data!.get("biggestDrink")}",
+                        Text(_drinkName,
                             style: TextStyle(
                                 fontSize: 36,
                                 fontWeight: FontWeight.w500,

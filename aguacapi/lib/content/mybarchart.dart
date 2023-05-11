@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:aguacapi/colors/colors.dart';
@@ -5,14 +7,16 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:aguacapi/providers/estadisticas_provider.dart';
 
-class MyBarChart extends StatefulWidget {
-  const MyBarChart({super.key});
+class MyBarChart extends StatelessWidget {
+  final List<dynamic> milliliters;
+  final List<dynamic> dates;
+  final num yLimit;
+  MyBarChart(
+      {super.key,
+      required this.milliliters,
+      required this.dates,
+      required this.yLimit});
 
-  @override
-  State<MyBarChart> createState() => _MyBarChartState();
-}
-
-class _MyBarChartState extends State<MyBarChart> {
   @override
   Widget build(BuildContext context) {
     return BarChart(
@@ -21,9 +25,9 @@ class _MyBarChartState extends State<MyBarChart> {
         titlesData: titlesData,
         borderData: borderData,
         barGroups: barGroups,
-        gridData: FlGridData(show: false),
+        gridData: FlGridData(show: true),
         alignment: BarChartAlignment.spaceAround,
-        maxY: 4500,
+        maxY: yLimit.toDouble() <= 0 ? 2000.0 : yLimit.toDouble() + 300.0,
         // AQUÍ SE MODIFICA EL MÁXIMO DE MILILITROS
         // SE PUEDE OBTENER CON UN CÁLCULO DEPENDIENDO DEL CONSUMO MÁXIMO DE CADA USUARIO
       ),
@@ -62,25 +66,25 @@ class _MyBarChartState extends State<MyBarChart> {
     String text;
     switch (value.toInt()) {
       case 0:
-        text = '01/02';
+        text = dates[0].toString().substring(0, 5);
         break;
       case 1:
-        text = '02/02';
+        text = dates[1].toString().substring(0, 5);
         break;
       case 2:
-        text = '03/02';
+        text = dates[2].toString().substring(0, 5);
         break;
       case 3:
-        text = '04/02';
+        text = dates[3].toString().substring(0, 5);
         break;
       case 4:
-        text = '05/02';
+        text = dates[4].toString().substring(0, 5);
         break;
       case 5:
-        text = '06/02';
+        text = dates[5].toString().substring(0, 5);
         break;
       case 6:
-        text = '07/02';
+        text = dates[6].toString().substring(0, 5);
         break;
       default:
         text = '';
@@ -132,7 +136,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 0,
           barRods: [
             BarChartRodData(
-              toY: 1000,
+              toY: milliliters[0].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -142,7 +146,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 1,
           barRods: [
             BarChartRodData(
-              toY: 3600,
+              toY: milliliters[1].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -152,7 +156,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 2,
           barRods: [
             BarChartRodData(
-              toY: 500,
+              toY: milliliters[2].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -162,7 +166,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 3,
           barRods: [
             BarChartRodData(
-              toY: 4200,
+              toY: milliliters[3].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -172,7 +176,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 4,
           barRods: [
             BarChartRodData(
-              toY: 4500,
+              toY: milliliters[4].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -182,7 +186,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 5,
           barRods: [
             BarChartRodData(
-              toY: 1210,
+              toY: milliliters[5].toDouble(),
               gradient: _barsGradient,
             )
           ],
@@ -192,7 +196,7 @@ class _MyBarChartState extends State<MyBarChart> {
           x: 6,
           barRods: [
             BarChartRodData(
-              toY: 990,
+              toY: milliliters[6].toDouble(),
               gradient: _barsGradient,
             )
           ],

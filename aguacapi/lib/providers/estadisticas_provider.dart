@@ -15,6 +15,10 @@ class EstadisticasProvider with ChangeNotifier {
   var selectedDate = TextEditingController();
   var _today = DateFormat('dd-MM-yyyy').format(DateTime.now());
 
+  String noName = "Sin registros";
+  String nodrinkPhoto =
+      "https://firebasestorage.googleapis.com/v0/b/auth-example-a3044.appspot.com/o/drinks-photos-aguacapi%2Fnodrink.png?alt=media&token=f4d02a80-b4e1-4525-8216-e93e8aae47ec";
+
   // Cambiar el valor de la fecha seleccionada
   void updateSelectedDate(String newDate) {
     selectedDate.text = newDate;
@@ -46,9 +50,11 @@ class EstadisticasProvider with ChangeNotifier {
   }
 
 // Guardar valores del usuario en la colección estadisticas-aguacapi
-  Future<bool> saveGraphValues() async {
+
+  Future<bool> saveGraphValues(bool started) async {
+    print("savedGraphValues");
     // Ver si el controller tiene algo
-    if (selectedDate.text == "") {
+    if (selectedDate.text == "" || started) {
       // Si no tiene nada, poner la fecha de hoy
       selectedDate.text = _today;
     }
@@ -58,8 +64,10 @@ class EstadisticasProvider with ChangeNotifier {
     // y sus nombres
     List<num> _weekWater = await _obtainWeekWater(_week);
     List<String> _sevenDaysDrinks = await _obtainDrinksNames(_week);
-    // Obtener la cantidad mayor de dicha lista
+    // Obtener la suma de dicha lista
     num _biggestQuantity = obtainBiggestQuantity(_weekWater);
+    // Obtener el límite de y
+    num _yLimit = _obtainYLimit(_weekWater);
     // Obtener el string que más se repite en _sevenDaysDrinks
     String _mostRepeatedDrink = _obtainMostRepeatedDrink(_sevenDaysDrinks);
     String _drinkPhoto = await _obtainDrinkPhoto(_mostRepeatedDrink);
@@ -78,6 +86,7 @@ class EstadisticasProvider with ChangeNotifier {
       "sevenDaysDrinks": _sevenDaysDrinks,
       "biggestDrink": _mostRepeatedDrink,
       "drinkPhoto": _drinkPhoto,
+      "yLimit": _yLimit,
     });
     return true;
   }
@@ -203,7 +212,7 @@ class EstadisticasProvider with ChangeNotifier {
     String _name;
     for (int i = 0; i < 7; i++) {
       // Sumar cantidades que coincidan con "date" de bebidas-aguacapi
-      print(">> Fecha: ${week[i]}");
+      //print(">> Fecha: ${week[i]}");
       _name = "";
       await FirebaseFirestore.instance
           .collection("bebidas-aguacapi")
@@ -232,15 +241,6 @@ class EstadisticasProvider with ChangeNotifier {
       _biggestQuantity += weekWater[i];
     }
     return _biggestQuantity;
-  }
-
-  // Obtener los 7 valores de cantidades a partir de las fechas
-  Future<List<int>> getNumbers() async {
-    // Simular una tarea asincrónica que toma tiempo
-    await Future.delayed(Duration(seconds: 1));
-
-    // Devolver una lista de números
-    return [1, 2, 3, 4, 5];
   }
 
   String _obtainMostRepeatedDrink(List<String> sevenDaysDrinks) {
@@ -278,6 +278,14 @@ class EstadisticasProvider with ChangeNotifier {
     return _drinkPhoto;
   }
 
-  // Leer los valores de estadisticas-aguacapi segun el usuario
-
+  // Obtener la cantidad más grande de la semana para limitar el eje Y
+  num _obtainYLimit(List<num> weekWater) {
+    num _yLimit = 0;
+    for (int i = 0; i < 7; i++) {
+      if (weekWater[i] > _yLimit) {
+        _yLimit = weekWater[i];
+      }
+    }
+    return _yLimit;
+  }
 }
