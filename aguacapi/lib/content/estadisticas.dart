@@ -90,7 +90,7 @@ class Estadisticas extends StatelessWidget {
                   onPressed: () async {
                     // Construir gráfica
 
-                    if (await eProvider.saveGraphValues()) {
+                    if (await eProvider.saveGraphValues(false)) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         SnackBar(
                           content: Text('Estadísticas obtenidas exitosamente'),

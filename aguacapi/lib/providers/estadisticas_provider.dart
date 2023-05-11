@@ -50,9 +50,11 @@ class EstadisticasProvider with ChangeNotifier {
   }
 
 // Guardar valores del usuario en la colección estadisticas-aguacapi
-  Future<bool> saveGraphValues() async {
+
+  Future<bool> saveGraphValues(bool started) async {
+    print("savedGraphValues");
     // Ver si el controller tiene algo
-    if (selectedDate.text == "") {
+    if (selectedDate.text == "" || started) {
       // Si no tiene nada, poner la fecha de hoy
       selectedDate.text = _today;
     }
@@ -239,15 +241,6 @@ class EstadisticasProvider with ChangeNotifier {
       _biggestQuantity += weekWater[i];
     }
     return _biggestQuantity;
-  }
-
-  // Obtener los 7 valores de cantidades a partir de las fechas
-  Future<List<int>> getNumbers() async {
-    // Simular una tarea asincrónica que toma tiempo
-    await Future.delayed(Duration(seconds: 1));
-
-    // Devolver una lista de números
-    return [1, 2, 3, 4, 5];
   }
 
   String _obtainMostRepeatedDrink(List<String> sevenDaysDrinks) {

@@ -45,7 +45,9 @@ void main() async {
             create: (context) => ConfiguracionProvider()..borrarValores()),
         ChangeNotifierProvider(create: (create) => RankingProvider()),
         ChangeNotifierProvider(
-            create: (create) => EstadisticasProvider()..borrarController()),
+            create: (create) => EstadisticasProvider()
+              ..borrarController()
+              ..saveGraphValues(true)),
       ],
       child: MyApp(),
     ),
