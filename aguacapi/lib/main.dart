@@ -1,3 +1,4 @@
+import 'package:aguacapi/providers/estadisticas_provider.dart';
 import 'package:flutter/material.dart';
 // Page
 import 'package:aguacapi/content/landing_page.dart';
@@ -19,6 +20,7 @@ import 'package:aguacapi/providers/nuevo_consumo_provider.dart';
 import 'package:aguacapi/providers/choose_picture_provider.dart';
 import 'package:aguacapi/providers/configuracion_provider.dart';
 import 'package:aguacapi/providers/ranking_provider.dart';
+import 'package:aguacapi/providers/estadisticas_provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -35,11 +37,14 @@ void main() async {
         ChangeNotifierProvider(
             create: (context) => PerfilProvider()..getTodayDrinks()),
         ChangeNotifierProvider(
-            create: (context) => NuevoConsumoProvider()..borrarControllers()),
+            create: (context) => NuevoConsumoProvider()
+              ..borrarControllers()
+              ..getTodayDrinks()),
         ChangeNotifierProvider(create: (context) => ChoosePictureProvider()),
         ChangeNotifierProvider(
             create: (context) => ConfiguracionProvider()..borrarValores()),
         ChangeNotifierProvider(create: (create) => RankingProvider()),
+        ChangeNotifierProvider(create: (create) => EstadisticasProvider()),
       ],
       child: MyApp(),
     ),
@@ -52,6 +57,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'AguaCapi App',
         theme: _acTheme,
         home: BlocConsumer<AuthBloc, AuthState>(

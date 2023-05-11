@@ -85,6 +85,37 @@ class UserAuthRepository {
     String _uid = FirebaseAuth.instance.currentUser!.uid;
     await _newUser.doc(_uid).set(_userData);
     print(">> DOCUMENTO CREADO: ${_uid}: ${CrearUsuarioProvider().getEmail}!!");
+    await createStatisticsDocument();
+  }
+
+  Future<void> createStatisticsDocument() async {
+    print("Entró a crear documento de estadísticas");
+    // fecha de hoy con formato aa--MM-yyyy
+    DateTime _fechaHoy = DateTime.now();
+    String _formattedDate = DateFormat('dd-MM-yyyy').format(_fechaHoy);
+
+    List<String> _sevenDaysList = [];
+    List<int> _sevenQuantitiesList = [];
+    List<String> _sevenDaysDrinks = [];
+
+    Map<String, dynamic> _statisticsData = {
+      "createdAt": _formattedDate,
+      "biggestDrink": "",
+      "biggestQuantity": 0,
+      "sevenDays": _sevenDaysList,
+      "sevenQuantities": _sevenQuantitiesList,
+      "sevenDaysDrinks": _sevenDaysDrinks,
+      "drinkPhoto": "",
+    };
+
+    // Crear documento en firestore
+    CollectionReference _newStatistics =
+        FirebaseFirestore.instance.collection("estadisticas-aguacapi");
+    // Obtener el ID del usuario autenticado
+    await _newStatistics
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set(_statisticsData);
+    //print(">> DOCUMENTO CREADO: ${FirebaseAuth.instance.currentUser!.uid}: ${CrearUsuarioProvider().getEmail}!!");
   }
 
   Future<void> signInWithFirebase() async {

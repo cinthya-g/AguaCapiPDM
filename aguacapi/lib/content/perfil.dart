@@ -629,6 +629,7 @@ class Perfil extends StatelessWidget {
                     )),
               ),
             ),
+            SizedBox(height: 20),
           ],
         )
       ],
