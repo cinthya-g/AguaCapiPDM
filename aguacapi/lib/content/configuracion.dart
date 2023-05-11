@@ -81,6 +81,8 @@ class Configuracion extends StatelessWidget {
             title: Text('Privacidad del ranking'),
             onTap: () {
               // show dialog
+              readOnly:
+              true;
               showDialog(
                   context: context,
                   builder: (BuildContext context) {

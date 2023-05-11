@@ -78,7 +78,7 @@ class NuevoConsumo extends StatelessWidget {
                       DateTime? pickedDate = await showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(1900),
+                          firstDate: DateTime(2023),
                           lastDate: DateTime.now());
                       if (pickedDate != null) {
                         String formattedDate =

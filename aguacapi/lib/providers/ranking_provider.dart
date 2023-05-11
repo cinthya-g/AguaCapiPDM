@@ -14,6 +14,5 @@ class RankingProvider extends ChangeNotifier {
       .collection('usuarios-aguacapi')
       .where("rankingPermission", isEqualTo: true)
       .orderBy("goalProgress", descending: true)
-      .limit(10)
       .snapshots();
 }
